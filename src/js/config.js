@@ -28,6 +28,25 @@ export var config = {
   ],
   overlayLayers: [
     {
+      options: {
+        url: 'https://gis.blm.gov/arcgis/rest/services/Cadastral/BLM_Natl_PLSS_CadNSDI/MapServer/1',
+        style: function() {
+          return {
+            color: 'grey',
+            fill: false
+          }
+        },
+        minZoom: 11,
+        opacity: 0.8,
+        interactive: false,
+        pane: 'trgrid'
+      },
+      color: '#FB3231',
+      name: 'Township and Range Grid',
+      isTownshipAndRange: true,
+      type: 'esri'
+    },
+    {
       url: 'https://stable-data.oregonhowl.org/oregon/oregon.json',
       name: 'State boundary',
       type: 'geojson',
@@ -38,5 +57,9 @@ export var config = {
         fill: false
       }
     }
-  ]
+  ],
+  oregonBbox: [
+    [41.9918, -124.7035],
+    [46.2991, -116.4635]
+  ],
 }
