@@ -1,0 +1,44 @@
+@import "~leaflet/dist/leaflet.css";
+
+@import "variables";
+@import "~bulma";
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+.leaflet-control-layers-toggle {
+	 width: 26px;
+	 height: 26px;
+   background-size: 20px 20px;
+}
+.leaflet-retina .leaflet-control-layers-toggle {
+  width: 26px;
+  height: 26px;
+  background-size: 20px 20px;
+}
+.leaflet-touch .leaflet-control-layers-toggle {
+	width: 30px;
+  height: 30px;
+}
+
+*.leaflet-control-layers-selector[disabled] + span {
+  color: gray;
+}
+
+.info-panel {
+    background: rgba(255,255,255,0.8);
+    border-radius: 3px;
+    top: 10px;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 10%);
+    padding: 10px;
+    position: absolute;
+    right: 10px;
+    z-index: 1000;
+}
