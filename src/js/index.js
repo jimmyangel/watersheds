@@ -19,8 +19,24 @@ let map = L.map('map', {center:[44, -120.5], zoom: 7, minZoom: 6})
 map.setMaxBounds([[41, -126], [47, -115]])
 
 setUpCustomPanes()
+setUpResetControl()
 setUpLayerControl()
 setUpWatershedsLayer()
+
+function setUpResetControl() {
+  let resetControl = L.control({position: 'topleft'})
+  resetControl.onAdd = function () {
+    this._div = L.DomUtil.create('div', 'leaflet-control leaflet-bar reset')
+    this._div.innerHTML = '<a id="resetControl" style="font-size: large;" href="#" title="Reset View"><i class="fa-solid fa-arrows-rotate"></i></a>';
+    return this._div
+  };
+  resetControl.addTo(map)
+  document.getElementById('resetControl').addEventListener('click', function() {
+    console.log('reset')
+    map.flyToBounds(config.oregonBbox)
+    return false
+  })
+}
 
 function setUpLayerControl() {
   let baseMaps = {}
