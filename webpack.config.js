@@ -36,10 +36,6 @@ module.exports = {
         type: 'asset/resource',
       },
       {
-        test: /\.(ico)$/,
-        use: 'file-loader?name=[name].[ext]'
-      },
-      {
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         use: 'file-loader?name=./fonts/[name].[ext]'
       },
