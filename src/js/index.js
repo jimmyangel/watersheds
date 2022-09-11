@@ -33,28 +33,27 @@ function setUpLayerControl() {
     }
   })
   // Iterate through list of overlay layers and add to layer control
-  //for (k=0; k<config.overlayLayers.length; k++) {
   config.overlayLayers.forEach(async overlayLayer => {
     let oLayer
     switch (overlayLayer.type) {
-        case 'esri': {
-          oLayer = overlayLayers[overlayLayer.name] = new FeatureLayer(overlayLayer.options)
-          if (overlayLayer.isTownshipAndRange) {
-              setUpTownshipAndRangeLabels(oLayer)
-          }
-          break
+      case 'esri': {
+        oLayer = overlayLayers[overlayLayer.name] = new FeatureLayer(overlayLayer.options)
+        if (overlayLayer.isTownshipAndRange) {
+            setUpTownshipAndRangeLabels(oLayer)
         }
-        case 'geojson': {
-          oLayer = overlayLayers[overlayLayer.name] = L.geoJson()
-          let data = await getGeoJson(overlayLayer.url)
-          oLayer.addData(data)
-          oLayer.setStyle(overlayLayer.style)
-          break
-        }
-        default: {
-          oLayer = overlayLayers[overlayLayer.name] = L.tileLayer(overlayLayer.url, overlayLayer.options)
-        }
+        break
       }
+      case 'geojson': {
+        oLayer = overlayLayers[overlayLayer.name] = L.geoJson()
+        let data = await getGeoJson(overlayLayer.url)
+        oLayer.addData(data)
+        oLayer.setStyle(overlayLayer.style)
+        break
+      }
+      default: {
+        oLayer = overlayLayers[overlayLayer.name] = L.tileLayer(overlayLayer.url, overlayLayer.options)
+      }
+    }
     if (overlayLayer.checked) {
       map.addLayer(oLayer)
     }
