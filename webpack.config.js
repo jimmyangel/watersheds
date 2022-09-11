@@ -16,8 +16,8 @@ module.exports = {
   plugins: [
     new HtmlPlugin({template: 'index.html',inject : true}),
     // new webpack.ProvidePlugin({$: 'jquery', jQuery: 'jquery', 'window.jQuery': 'jquery'}),
-    new MiniCssExtractPlugin()
-    //new CopyWebpackPlugin([{from: 'data', to: 'data'}])
+    new MiniCssExtractPlugin(),
+    new CopyWebpackPlugin({patterns: [{from: '../data', to: 'data'}]})
     //new BundleAnalyzerPlugin()
   ],
   devServer: {
