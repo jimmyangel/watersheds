@@ -20,7 +20,7 @@ map.setMaxBounds([[41, -126], [47, -115]])
 
 setUpCustomPanes()
 setUpLayerControl()
-
+setUpWatershedsLayer()
 
 function setUpLayerControl() {
   let baseMaps = {}
@@ -123,4 +123,9 @@ function setUpTownshipAndRangeLabels(overlayLayer) {
       map.removeLayer(label)
     }
   })
+}
+
+async function setUpWatershedsLayer() {
+  let data = await getGeoJson('/data/watersheds.json')
+  L.geoJSON(data).addTo(map)
 }
