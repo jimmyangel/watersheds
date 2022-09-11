@@ -1,4 +1,4 @@
-import $ from 'jQuery'
+//import $ from 'jQuery'
 
 import L from 'leaflet'
 
@@ -6,8 +6,10 @@ import {config} from './config.js'
 
 import {FeatureLayer} from 'esri-leaflet'
 
-import { library, dom } from '@fortawesome/fontawesome-svg-core'
-import { faArrowsRotate } from '@fortawesome/free-solid-svg-icons/faArrowsRotate'
+import {library, dom} from '@fortawesome/fontawesome-svg-core'
+import {faArrowsRotate} from '@fortawesome/free-solid-svg-icons/faArrowsRotate'
+
+import {getGeoJson} from './data.js'
 
 library.add(faArrowsRotate)
 dom.watch()
@@ -21,41 +23,42 @@ setUpLayerControl()
 
 
 function setUpLayerControl() {
-  var baseMaps = {}
-  var overlayLayers = {}
+  let baseMaps = {}
+  let overlayLayers = {}
   // Iterate through list of base layers and add to layer control
-  for (var k=0; k<config.baseMapLayers.length; k++) {
-    var bl = baseMaps[config.baseMapLayers[k].name] = L.tileLayer(config.baseMapLayers[k].url, config.baseMapLayers[k].options)
-    if (config.baseMapLayers[k].default) {
+  config.baseMapLayers.forEach(baseMapLayer => {
+    let bl = baseMaps[baseMapLayer.name] = L.tileLayer(baseMapLayer.url, baseMapLayer.options)
+    if (baseMapLayer.default) {
       map.addLayer(bl)
     }
-  }
+  })
   // Iterate through list of overlay layers and add to layer control
-  for (k=0; k<config.overlayLayers.length; k++) {
-    var oLayer
-    switch (config.overlayLayers[k].type) {
-      case 'esri':
-        oLayer = overlayLayers[config.overlayLayers[k].name] = new FeatureLayer(config.overlayLayers[k].options);
-        if (config.overlayLayers[k].isTownshipAndRange) {
-            setUpTownshipAndRangeLabels(oLayer)
+  //for (k=0; k<config.overlayLayers.length; k++) {
+  config.overlayLayers.forEach(async overlayLayer => {
+    let oLayer
+    switch (overlayLayer.type) {
+        case 'esri': {
+          oLayer = overlayLayers[overlayLayer.name] = new FeatureLayer(overlayLayer.options)
+          if (overlayLayer.isTownshipAndRange) {
+              setUpTownshipAndRangeLabels(oLayer)
+          }
+          break
         }
-        break
-      case 'geojson':
-        oLayer = overlayLayers[config.overlayLayers[k].name] = L.geoJson();
-        (function(l, s) {
-          $.getJSON(config.overlayLayers[k].url, function(data) {
-            l.addData(data)
-            l.setStyle(s)
-          })
-        })(oLayer, config.overlayLayers[k].style)
-        break
-      default:
-        oLayer = overlayLayers[config.overlayLayers[k].name] = L.tileLayer(config.overlayLayers[k].url, config.overlayLayers[k].options)
+        case 'geojson': {
+          oLayer = overlayLayers[overlayLayer.name] = L.geoJson()
+          let data = await getGeoJson(overlayLayer.url)
+          oLayer.addData(data)
+          oLayer.setStyle(overlayLayer.style)
+          break
+        }
+        default: {
+          oLayer = overlayLayers[overlayLayer.name] = L.tileLayer(overlayLayer.url, overlayLayer.options)
+        }
       }
-      if (config.overlayLayers[k].checked) {
-        map.addLayer(oLayer)
-      }
+    if (overlayLayer.checked) {
+      map.addLayer(oLayer)
     }
+  })
 
   L.control.layers(baseMaps, overlayLayers, {position: 'topleft', collapsed: true}).addTo(map)
 }
@@ -63,17 +66,17 @@ function setUpLayerControl() {
 function setUpCustomPanes() {
   map.createPane('trgrid')
   map.getPane('trgrid').style.zIndex = 650
-  var mainPane = map.createPane('mainpane')
+  let mainPane = map.createPane('mainpane')
   map.getPane('mainpane').style.zIndex = 400
 
   // The below is a hack to handle click throughs (https://gist.github.com/perliedman/84ce01954a1a43252d1b917ec925b3dd)
   L.DomEvent.on(mainPane, 'click', function(e) {
     if (e._stopped) { return }
 
-    var target = e.target
-    var stopped
-    var removed
-    var ev = new MouseEvent(e.type, e)
+    let target = e.target
+    let stopped
+    let removed
+    let ev = new MouseEvent(e.type, e)
 
     removed = {node: target, display: target.style.display}
     target.style.display = 'none'
@@ -91,13 +94,13 @@ function setUpCustomPanes() {
 }
 
 function setUpTownshipAndRangeLabels(overlayLayer) {
-  var labels = {};
+  let labels = {};
 
   overlayLayer.on('createfeature', function(e){
-    var id = e.feature.id
-    var feature = this.getFeature(id)
-    var center = feature.getBounds().getCenter()
-    var label = L.marker(center, {
+    let id = e.feature.id
+    let feature = this.getFeature(id)
+    let center = feature.getBounds().getCenter()
+    let label = L.marker(center, {
       icon: L.divIcon({
         iconSize: [100,20],
         className: 'toRaLabel',
@@ -109,14 +112,14 @@ function setUpTownshipAndRangeLabels(overlayLayer) {
   })
 
   overlayLayer.on('addfeature', function(e){
-    var label = labels[e.feature.id]
+    let label = labels[e.feature.id]
     if(label){
       label.addTo(map)
     }
   })
 
   overlayLayer.on('removefeature', function(e){
-    var label = labels[e.feature.id]
+    let label = labels[e.feature.id]
     if(label){
       map.removeLayer(label)
     }
