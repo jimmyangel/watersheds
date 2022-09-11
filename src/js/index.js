@@ -1,6 +1,7 @@
 //import $ from 'jQuery'
 
 import L from 'leaflet'
+import 'leaflet-event-forwarder'
 
 import {config} from './config.js'
 
@@ -11,12 +12,38 @@ import {faArrowsRotate} from '@fortawesome/free-solid-svg-icons/faArrowsRotate'
 
 import {getGeoJson} from './data.js'
 
+import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
+import iconUrl from 'leaflet/dist/images/marker-icon.png'
+import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
+
 library.add(faArrowsRotate)
 dom.watch()
 
+delete L.Icon.Default.prototype._getIconUrl
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: iconRetinaUrl,
+  iconUrl: iconUrl,
+  shadowUrl: shadowUrl
+})
+
 let map = L.map('map', {center:[44, -120.5], zoom: 7, minZoom: 6})
+let marker
 
 map.setMaxBounds([[41, -126], [47, -115]])
+
+const myEventForwarder = new L.eventForwarder({
+  // ref to leaflet map
+  map: map,
+  // events to forward
+  events: {
+    click: true,
+    mousemove: false
+  }
+});
+
+// enable event forwarding
+myEventForwarder.enable();
 
 setUpCustomPanes()
 setUpResetControl()
@@ -142,6 +169,34 @@ function setUpTownshipAndRangeLabels(overlayLayer) {
 }
 
 async function setUpWatershedsLayer() {
+
   let data = await getGeoJson('/data/watersheds.json')
-  L.geoJSON(data).addTo(map)
+  let watersheds = L.geoJSON(data, {
+      style: function (f) {
+        let style = {
+          color: '#2F4F4F',
+          fillColor: '#AFEEEE',
+          weight: 1,
+          fillOpacity: 0,
+          opacity: 0.65
+        }
+        if (f.properties.POP_EST_19 === f.properties.POP_TOTAL) {
+          style.fillOpacity = 0.3
+        }
+        return style
+      },
+      onEachFeature: function (f, l) {
+        l.on('click', function(e) {
+          if (l.feature.properties.POP_EST_19 === l.feature.properties.POP_TOTAL) {
+            if (marker) {
+              map.removeLayer(marker)
+            }
+            marker = L.marker(e.latlng).addTo(map)
+          }
+          console.log(e, l.feature.properties.WATER_PROV)
+        })
+      }
+    }
+  )
+  watersheds.addTo(map)
 }
