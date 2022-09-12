@@ -25,6 +25,9 @@ module.exports = {
       directory: path.join(__dirname, 'public')
     },
   },
+  ignoreWarnings: [
+    /only default export is available soon/,
+  ],
   module: {
     rules: [
       {

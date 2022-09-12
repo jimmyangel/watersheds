@@ -19,6 +19,10 @@ import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
 import aboutModal from '../templates/aboutModal.hbs';
 
+import {version} from '../../package.json'
+
+console.log(version)
+
 library.add(faArrowsRotate)
 dom.watch()
 
@@ -177,7 +181,7 @@ function setUpAboutControl() {
   document.getElementById('aboutControl').addEventListener('click', function() {
     console.log('modal', aboutModal)
     map.fire('modal', {
-      content: aboutModal({version: config.versionString, lastUpdated: config.dataLastUpdated})
+      content: aboutModal({version: version})
     })
   })
 }
@@ -200,6 +204,7 @@ async function setUpWatershedsLayer() {
         }
         return style
       },
+      attribution: config.watershedsAttribution,
       onEachFeature: function (f, l) {
         l.on('click', function(e) {
           clearMarker()

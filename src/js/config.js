@@ -74,4 +74,5 @@ export var config = {
     [41.9918, -124.7035],
     [46.2991, -116.4635]
   ],
+  watershedsAttribution: 'Oregon Wild'
 }
