@@ -29,6 +29,18 @@ export var config = {
   overlayLayers: [
     {
       options: {
+        url: 'https://arcgis.deq.state.or.us/arcgis/rest/services/WQ/OregonHydro/MapServer',
+        f: 'image',
+        format: 'png32',
+        layers: [0],
+        showLabels: true,
+        attribution: 'Oregon DEQ'
+      },
+      name: 'Oregon DEQ Hydrography',
+      type: 'esriimg'
+    },
+    {
+      options: {
         url: 'https://gis.blm.gov/arcgis/rest/services/Cadastral/BLM_Natl_PLSS_CadNSDI/MapServer/1',
         style: function() {
           return {

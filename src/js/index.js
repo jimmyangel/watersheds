@@ -5,7 +5,7 @@ import 'leaflet-event-forwarder'
 
 import {config} from './config.js'
 
-import {FeatureLayer} from 'esri-leaflet'
+import {FeatureLayer, DynamicMapLayer} from 'esri-leaflet'
 
 import {library, dom} from '@fortawesome/fontawesome-svg-core'
 import {faArrowsRotate} from '@fortawesome/free-solid-svg-icons/faArrowsRotate'
@@ -27,7 +27,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: shadowUrl
 })
 
-let map = L.map('map', {center:[44, -120.5], zoom: 7, minZoom: 6})
+let map = L.map('map', {center:[44, -120.5], zoom: 7, minZoom: 6, doubleClickZoom: false})
 let marker
 
 map.setMaxBounds([[41, -126], [47, -115]])
@@ -84,6 +84,10 @@ function setUpLayerControl() {
         if (overlayLayer.isTownshipAndRange) {
             setUpTownshipAndRangeLabels(oLayer)
         }
+        break
+      }
+      case 'esriimg': {
+        oLayer = overlayLayers[overlayLayer.name] = new DynamicMapLayer(overlayLayer.options)
         break
       }
       case 'geojson': {
@@ -193,7 +197,7 @@ async function setUpWatershedsLayer() {
             }
             marker = L.marker(e.latlng).addTo(map)
           }
-          console.log(e, l.feature.properties.WATER_PROV)
+          console.log(e, l.feature.properties.WATER_PROV, l.feature.properties.POP_TOTAL)
         })
       }
     }
