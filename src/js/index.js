@@ -2,6 +2,7 @@
 
 import L from 'leaflet'
 import 'leaflet-event-forwarder'
+import leafletPip from '@mapbox/leaflet-pip'
 
 import {config} from './config.js'
 
@@ -32,7 +33,7 @@ let marker
 
 map.setMaxBounds([[41, -126], [47, -115]])
 
-const eventForwarder = new L.eventForwarder({
+/*const eventForwarder = new L.eventForwarder({
   // ref to leaflet map
   map: map,
   // events to forward
@@ -43,7 +44,7 @@ const eventForwarder = new L.eventForwarder({
 })
 
 // enable event forwarding
-eventForwarder.enable();
+eventForwarder.enable(); */
 
 setUpCustomPanes()
 setUpResetControl()
@@ -174,6 +175,9 @@ function setUpTownshipAndRangeLabels(overlayLayer) {
 
 async function setUpWatershedsLayer() {
 
+  let wsList = document.getElementById('ws-list')
+  let totalPopulation = document.getElementById('total-population')
+
   let data = await getGeoJson('/data/watersheds.json')
   let watersheds = L.geoJSON(data, {
       style: function (f) {
@@ -191,13 +195,26 @@ async function setUpWatershedsLayer() {
       },
       onEachFeature: function (f, l) {
         l.on('click', function(e) {
-          if (l.feature.properties.POP_EST_19 === l.feature.properties.POP_TOTAL) {
-            if (marker) {
-              map.removeLayer(marker)
-            }
-            marker = L.marker(e.latlng).addTo(map)
+          if (marker) {
+            map.removeLayer(marker)
+            wsList.innerHTML = ''
+            totalPopulation.innerHTML = ''
           }
-          console.log(e, l.feature.properties.WATER_PROV, l.feature.properties.POP_TOTAL)
+          marker = L.marker(e.latlng).addTo(map)
+
+          let result = leafletPip.pointInLayer(e.latlng, watersheds).map(item => (
+            {
+              provider: item.feature.properties.WATER_PROV,
+              population: item.feature.properties.POP_EST_19,
+              totalPopulation: item.feature.properties.POP_TOTAL
+            }
+          )).sort((a, b) => b.totalPopulation - a.totalPopulation)
+
+          totalPopulation.innerHTML = `Total population: ${result[0].totalPopulation.toLocaleString()}`
+
+          result.forEach(item => {
+            wsList.innerHTML += `<div class="panel-block">${item.provider} (${item.population.toLocaleString()})</div>`
+          })
         })
       }
     }

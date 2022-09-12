@@ -2,6 +2,7 @@
 
 @import "variables";
 @import "~bulma";
+@import "~bulma-switch";
 
 html, body {
   margin: 0;
@@ -42,4 +43,6 @@ html, body {
     right: 10px;
     z-index: 1000;
     max-width: 50%;
+    max-height: 100%;
+    overflow: auto;
 }
