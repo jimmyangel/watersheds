@@ -44,6 +44,7 @@
     "esri-leaflet": "^3.0.8",
     "handlebars": "^4.7.7",
     "jquery": "^3.6.1",
-    "leaflet": "^1.8.0"
+    "leaflet": "^1.8.0",
+    "leaflet-modal": "^0.2.0"
   }
 }

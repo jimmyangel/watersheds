@@ -10,13 +10,17 @@
     <div id="map"></div>
     <div class="info-panel">
       <div class="panel">
-        <div class="panel-heading is-size-6 has-text-centered">Oregon<br>Surface drinking water sources</div>
-        <div class="panel-block">
-          <input id="switchRoundedDefault" type="checkbox" name="switchRoundedDefault" class="switch is-rounded is-small" checked="checked">
-          <label for="switchRoundedDefault">Enable marker placement</label>
+        <div class="panel-heading is-size-6 has-text-centered">Oregon<br>surface drinking water sources</div>
+        <div class="panel-block is-size-7 has-text-centered" style="justify-content: center;">
+          Click on a watershed shape<br>to discover connected populations
         </div>
-        <div class="panel-block" id="total-population"></div>
-        <div class="is-size-7" id="ws-list">
+        <div id="data-container" style="display: none;">
+          <div class="panel-block" style="justify-content: center;">
+            <button id="clear-marker" class="button is-small">Clear marker</button>
+          </div>
+          <div class="panel-block has-text-weight-semibold" style="justify-content: center;"><img src="images/marker-icon.png">&nbsp;Connected populations</div>
+          <div class="panel-block" id="total-population"></div>
+          <div class="is-size-7" id="ws-list"></div>
         </div>
       </div>
     </div>

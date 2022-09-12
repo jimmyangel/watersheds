@@ -2,6 +2,7 @@
 
 import L from 'leaflet'
 import leafletPip from '@mapbox/leaflet-pip'
+import 'leaflet-modal'
 
 import {config} from './config.js'
 
@@ -15,6 +16,8 @@ import {getGeoJson} from './data.js'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
+
+import aboutModal from '../templates/aboutModal.hbs';
 
 library.add(faArrowsRotate)
 dom.watch()
@@ -31,6 +34,8 @@ let map = L.map('map', {center:[44, -120.5], zoom: 7, minZoom: 6, doubleClickZoo
 let marker
 
 map.setMaxBounds([[41, -126], [47, -115]])
+
+document.getElementById('clear-marker').addEventListener('click', clearMarker)
 
 setUpCustomPanes()
 setUpResetControl()
@@ -169,13 +174,17 @@ function setUpAboutControl() {
   }
   aboutControl.addTo(map)
 
+  document.getElementById('aboutControl').addEventListener('click', function() {
+    console.log('modal', aboutModal)
+    map.fire('modal', {
+      content: aboutModal({version: config.versionString, lastUpdated: config.dataLastUpdated})
+    })
+  })
 }
 
 async function setUpWatershedsLayer() {
 
   let wsList = document.getElementById('ws-list')
-  let totalPopulation = document.getElementById('total-population')
-
   let data = await getGeoJson('/data/watersheds.json')
   let watersheds = L.geoJSON(data, {
       style: function (f) {
@@ -187,18 +196,15 @@ async function setUpWatershedsLayer() {
           opacity: 0.65
         }
         if (f.properties.POP_EST_19 === f.properties.POP_TOTAL) {
-          style.fillOpacity = 0.3
+          style.fillOpacity = 0.2
         }
         return style
       },
       onEachFeature: function (f, l) {
         l.on('click', function(e) {
-          if (marker) {
-            map.removeLayer(marker)
-            wsList.innerHTML = ''
-            totalPopulation.innerHTML = ''
-          }
+          clearMarker()
           marker = L.marker(e.latlng).addTo(map)
+          document.getElementById('data-container').style.display='block'
 
           let result = leafletPip.pointInLayer(e.latlng, watersheds).map(item => (
             {
@@ -208,7 +214,7 @@ async function setUpWatershedsLayer() {
             }
           )).sort((a, b) => b.totalPopulation - a.totalPopulation)
 
-          totalPopulation.innerHTML = `Total population: ${result[0].totalPopulation.toLocaleString()}`
+          document.getElementById('total-population').innerHTML = `Total: ${result[0].totalPopulation.toLocaleString()}`
 
           result.forEach(item => {
             if (item.population) {
@@ -220,4 +226,13 @@ async function setUpWatershedsLayer() {
     }
   )
   watersheds.addTo(map)
+}
+
+function clearMarker() {
+  if (marker) {
+    map.removeLayer(marker)
+    document.getElementById('ws-list').innerHTML = ''
+    document.getElementById('total-population').innerHTML = ''
+    document.getElementById('data-container').style.display='none'
+  }
 }

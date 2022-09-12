@@ -36,10 +36,6 @@ module.exports = {
         type: 'asset/resource',
       },
       {
-        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: 'file-loader?name=./fonts/[name].[ext]'
-      },
-      {
         test: /\.js$/,
         exclude: [/node_modules/],
         use: ['babel-loader', 'eslint-loader']
@@ -51,7 +47,8 @@ module.exports = {
       },
       {
         test: /\.hbs$/,
-        loader: "handlebars-loader"
+        loader: "handlebars-loader",
+        options: {inlineRequires: '/images/'}
       },
       {
         test: /\.js$/,
