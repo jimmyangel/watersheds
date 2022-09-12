@@ -49,6 +49,7 @@ eventForwarder.enable(); */
 setUpCustomPanes()
 setUpResetControl()
 setUpLayerControl()
+setUpAboutControl()
 setUpWatershedsLayer()
 
 function setUpResetControl() {
@@ -173,6 +174,17 @@ function setUpTownshipAndRangeLabels(overlayLayer) {
   })
 }
 
+function setUpAboutControl() {
+  var aboutControl = L.control({position: 'bottomright'})
+  aboutControl.onAdd = function () {
+    this._div = L.DomUtil.create('div', 'leaflet-control leaflet-bar about')
+    this._div.innerHTML = '<a id="aboutControl" style="font-size: x-large; font-weight: bold;" href="#" title="About">&#9432;</a>'
+    return this._div;
+  }
+  aboutControl.addTo(map)
+
+}
+
 async function setUpWatershedsLayer() {
 
   let wsList = document.getElementById('ws-list')
@@ -213,7 +225,9 @@ async function setUpWatershedsLayer() {
           totalPopulation.innerHTML = `Total population: ${result[0].totalPopulation.toLocaleString()}`
 
           result.forEach(item => {
-            wsList.innerHTML += `<div class="panel-block">${item.provider} (${item.population.toLocaleString()})</div>`
+            if (item.population) {
+              wsList.innerHTML += `<div class="panel-block">${item.provider} (${item.population.toLocaleString()})</div>`
+            }
           })
         })
       }
