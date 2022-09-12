@@ -2,7 +2,12 @@
 @import "~leaflet-modal/dist/leaflet.modal.css";
 
 @import "variables";
-@import "~bulma";
+@import "~bulma/sass/base/_all.sass";
+@import "~bulma/sass/helpers/_all.sass";
+@import "~bulma/sass/elements/button.sass";
+@import "~bulma/sass/elements/content.sass";
+@import "~bulma/sass/elements/notification.sass";
+@import "~bulma/sass/components/panel.sass";
 
 html, body {
   margin: 0;
