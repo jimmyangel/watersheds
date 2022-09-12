@@ -32,7 +32,7 @@ let marker
 
 map.setMaxBounds([[41, -126], [47, -115]])
 
-const myEventForwarder = new L.eventForwarder({
+const eventForwarder = new L.eventForwarder({
   // ref to leaflet map
   map: map,
   // events to forward
@@ -40,10 +40,10 @@ const myEventForwarder = new L.eventForwarder({
     click: true,
     mousemove: false
   }
-});
+})
 
 // enable event forwarding
-myEventForwarder.enable();
+eventForwarder.enable();
 
 setUpCustomPanes()
 setUpResetControl()
