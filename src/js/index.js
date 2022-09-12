@@ -1,7 +1,6 @@
 //import $ from 'jQuery'
 
 import L from 'leaflet'
-import 'leaflet-event-forwarder'
 import leafletPip from '@mapbox/leaflet-pip'
 
 import {config} from './config.js'
@@ -32,19 +31,6 @@ let map = L.map('map', {center:[44, -120.5], zoom: 7, minZoom: 6, doubleClickZoo
 let marker
 
 map.setMaxBounds([[41, -126], [47, -115]])
-
-/*const eventForwarder = new L.eventForwarder({
-  // ref to leaflet map
-  map: map,
-  // events to forward
-  events: {
-    click: true,
-    mousemove: false
-  }
-})
-
-// enable event forwarding
-eventForwarder.enable(); */
 
 setUpCustomPanes()
 setUpResetControl()
