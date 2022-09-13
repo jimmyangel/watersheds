@@ -196,13 +196,8 @@ async function setUpWatershedsLayer() {
   let data = await getGeoJson('/data/watersheds.json')
   let watersheds = L.geoJSON(data, {
       style: function (f) {
-        let style = {
-          color: '#2F4F4F',
-          fillColor: '#AFEEEE',
-          weight: 1,
-          fillOpacity: 0,
-          opacity: 0.65
-        }
+        let style = {...config.watershedsStyle} // Clone
+
         if (f.properties.POP_EST_19 === f.properties.POP_TOTAL) {
           style.fillOpacity = 0.2
         }

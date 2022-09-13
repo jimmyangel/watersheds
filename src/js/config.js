@@ -74,5 +74,12 @@ export var config = {
     [41.9918, -124.7035],
     [46.2991, -116.4635]
   ],
+  watershedsStyle: {
+    color: '#2F4F4F',
+    fillColor: '#AFEEEE',
+    weight: 1,
+    fillOpacity: 0,
+    opacity: 0.65
+  },
   watershedsAttribution: 'Oregon Wild'
 }
