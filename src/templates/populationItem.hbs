@@ -1,4 +1,9 @@
-<a href="#population-item-{{row}}" class="panel-block has-text-weight-semibold" data-action="collapse">{{provider}} ({{population}})</a>
+<div class="is-flex is-justify-content-space-between">
+  <a href="#population-item-{{row}}" class="panel-block has-text-weight-semibold" data-action="collapse">{{provider}} ({{population}})</a>
+  <a href="#population-item-{{row}}" class="panel-block has-text-weight-semibold" data-action="collapse">+</a>
+</div>
 <div id="population-item-{{row}}" class="is-collapsible">
-  <div class="panel-block">here goes some detail</div>
+  <ul class="panel-block">
+    <li>here goes some detail</li>
+  <ul>
 </div>
