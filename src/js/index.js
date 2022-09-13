@@ -17,7 +17,11 @@ import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
-import aboutModal from '../templates/aboutModal.hbs';
+import resetControl from '../templates/resetControl.hbs'
+import aboutControl from '../templates/aboutControl.hbs'
+import aboutModal from '../templates/aboutModal.hbs'
+import populationItem from '../templates/populationItem.hbs'
+
 
 import {version} from '../../package.json'
 
@@ -48,13 +52,13 @@ setUpAboutControl()
 setUpWatershedsLayer()
 
 function setUpResetControl() {
-  let resetControl = L.control({position: 'topleft'})
-  resetControl.onAdd = function () {
+  let control = L.control({position: 'topleft'})
+  control.onAdd = function () {
     this._div = L.DomUtil.create('div', 'leaflet-control leaflet-bar reset')
-    this._div.innerHTML = '<a id="resetControl" style="font-size: large;" href="#" title="Reset View"><i class="fa-solid fa-arrows-rotate"></i></a>';
+    this._div.innerHTML = resetControl({title: 'Reset View'})
     return this._div
   };
-  resetControl.addTo(map)
+  control.addTo(map)
   document.getElementById('resetControl').addEventListener('click', function() {
     console.log('reset')
     map.flyToBounds(config.oregonBbox)
@@ -170,13 +174,13 @@ function setUpTownshipAndRangeLabels(overlayLayer) {
 }
 
 function setUpAboutControl() {
-  var aboutControl = L.control({position: 'bottomright'})
-  aboutControl.onAdd = function () {
+  var about = L.control({position: 'bottomright'})
+  about.onAdd = function () {
     this._div = L.DomUtil.create('div', 'leaflet-control leaflet-bar about')
-    this._div.innerHTML = '<a id="aboutControl" style="font-size: x-large; font-weight: bold;" href="#" title="About">&#9432;</a>'
+    this._div.innerHTML = aboutControl({about: 'About'})
     return this._div;
   }
-  aboutControl.addTo(map)
+  about.addTo(map)
 
   document.getElementById('aboutControl').addEventListener('click', function() {
     console.log('modal', aboutModal)
@@ -223,7 +227,7 @@ async function setUpWatershedsLayer() {
 
           result.forEach(item => {
             if (item.population) {
-              wsList.innerHTML += `<div class="panel-block">${item.provider} (${item.population.toLocaleString()})</div>`
+              wsList.innerHTML += populationItem({provider: item.provider, population: item.population.toLocaleString()})
             }
           })
         })
