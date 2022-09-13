@@ -1,7 +1,7 @@
 {
   "name": "watersheds",
   "version": "0.5.2",
-  "description": "",
+  "description": "Oregon surface drinking water watersheds",
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode \"development\"",
@@ -9,8 +9,8 @@
     "dev": "webpack-dev-server --hot --mode \"development\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["watersheds", "oregon", "oregonhowl"],
+  "author": "Ricardo Morin",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.19.0",
@@ -40,10 +40,8 @@
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@mapbox/leaflet-pip": "^1.1.0",
     "bulma": "^0.9.4",
-    "bulma-switch": "^2.0.4",
     "esri-leaflet": "^3.0.8",
     "handlebars": "^4.7.7",
-    "jquery": "^3.6.1",
     "leaflet": "^1.8.0",
     "leaflet-modal": "^0.2.0"
   }
