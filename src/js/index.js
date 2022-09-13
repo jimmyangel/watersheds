@@ -58,7 +58,6 @@ function setUpResetControl() {
   };
   control.addTo(map)
   document.getElementById('resetControl').addEventListener('click', function() {
-    console.log('reset')
     map.flyToBounds(config.oregonBbox)
     return false
   })
@@ -181,7 +180,6 @@ function setUpAboutControl() {
   about.addTo(map)
 
   document.getElementById('aboutControl').addEventListener('click', function() {
-    console.log('modal', aboutModal)
     map.fire('modal', {
       content: aboutModal({version: version})
     })
