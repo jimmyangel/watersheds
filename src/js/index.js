@@ -211,16 +211,28 @@ async function setUpWatershedsLayer() {
           let result = leafletPip.pointInLayer(e.latlng, watersheds).map(item => (
             {
               provider: item.feature.properties.WATER_PROV,
-              population: item.feature.properties.POP_EST_19,
-              totalPopulation: item.feature.properties.POP_TOTAL
+              population: item.feature.properties.POP_EST_19.toLocaleString(),
+              city: item.feature.properties.CITY_SERV.toLowerCase().replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase()),
+              totalPopulation: item.feature.properties.POP_TOTAL.toLocaleString(),
+              source: item.feature.properties.SRC_LABEL,
+              subbasin: item.feature.properties.SUBBASIN_N
             }
           )).sort((a, b) => b.totalPopulation - a.totalPopulation)
 
-          document.getElementById('total-population').innerHTML = `Total: ${result[0].totalPopulation.toLocaleString()}`
+          document.getElementById('total-population').innerHTML = `Total: ${result[0].totalPopulation}`
 
           result.forEach((item, idx) => {
             if (item.population) {
-              wsList.innerHTML += populationItem({row: idx, provider: item.provider, population: item.population.toLocaleString()})
+              wsList.innerHTML += populationItem(
+                {
+                  row: idx,
+                  provider: item.provider,
+                  population: item.population,
+                  city: item.city,
+                  source: item.source,
+                  subbasin: item.subbasin
+                }
+              )
             }
           })
           bulmaCollapsible.attach('.is-collapsible').forEach(c => {
