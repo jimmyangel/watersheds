@@ -25,8 +25,6 @@ import populationItem from '../templates/populationItem.hbs'
 
 import {version} from '../../package.json'
 
-console.log(version)
-
 library.add(faArrowsRotate)
 dom.watch()
 
