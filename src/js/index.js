@@ -211,15 +211,15 @@ async function setUpWatershedsLayer() {
           let result = leafletPip.pointInLayer(e.latlng, watersheds).map(item => (
             {
               provider: item.feature.properties.WATER_PROV,
-              population: item.feature.properties.POP_EST_19.toLocaleString(),
+              population: item.feature.properties.POP_EST_19,
               city: item.feature.properties.CITY_SERV.toLowerCase().replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase()),
-              totalPopulation: item.feature.properties.POP_TOTAL.toLocaleString(),
+              totalPopulation: item.feature.properties.POP_TOTAL,
               source: item.feature.properties.SRC_LABEL,
               subbasin: item.feature.properties.SUBBASIN_N
             }
           )).sort((a, b) => b.totalPopulation - a.totalPopulation)
 
-          document.getElementById('total-population').innerHTML = `Total: ${result[0].totalPopulation}`
+          document.getElementById('total-population').innerHTML = `Total: ${result[0].totalPopulation.toLocaleString()}`
 
           result.forEach((item, idx) => {
             if (item.population) {
@@ -227,7 +227,7 @@ async function setUpWatershedsLayer() {
                 {
                   row: idx,
                   provider: item.provider,
-                  population: item.population,
+                  population: item.population.toLocaleString(),
                   city: item.city,
                   source: item.source,
                   subbasin: item.subbasin
