@@ -10,7 +10,7 @@ import {config} from './config.js'
 import {FeatureLayer, DynamicMapLayer} from 'esri-leaflet'
 
 import {library, dom} from '@fortawesome/fontawesome-svg-core'
-import {faArrowsRotate} from '@fortawesome/free-solid-svg-icons/faArrowsRotate'
+import {faArrowsRotate, faAngleDown, faAngleUp} from '@fortawesome/free-solid-svg-icons'
 
 import {getGeoJson} from './data.js'
 
@@ -22,11 +22,12 @@ import resetControl from '../templates/resetControl.hbs'
 import aboutControl from '../templates/aboutControl.hbs'
 import aboutModal from '../templates/aboutModal.hbs'
 import populationItem from '../templates/populationItem.hbs'
+import angleIcon from '../templates/angleIcon.hbs'
 
 
 import {version} from '../../package.json'
 
-library.add(faArrowsRotate)
+library.add(faArrowsRotate, faAngleDown, faAngleUp)
 dom.watch()
 
 delete L.Icon.Default.prototype._getIconUrl
@@ -222,7 +223,14 @@ async function setUpWatershedsLayer() {
               wsList.innerHTML += populationItem({row: idx, provider: item.provider, population: item.population.toLocaleString()})
             }
           })
-          bulmaCollapsible.attach('.is-collapsible')
+          bulmaCollapsible.attach('.is-collapsible').forEach(c => {
+            c.on('after:expand', (e) => {
+              document.getElementById(e.element.id + '-angle').innerHTML = angleIcon({upOrDown: 'up'})
+            })
+            c.on('after:collapse', (e) => {
+              document.getElementById(e.element.id + '-angle').innerHTML = angleIcon({upOrDown: 'down'})
+            })
+          })
         })
       }
     }
