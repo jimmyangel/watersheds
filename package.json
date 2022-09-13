@@ -9,7 +9,11 @@
     "dev": "webpack-dev-server --hot --mode \"development\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["watersheds", "oregon", "oregonhowl"],
+  "keywords": [
+    "watersheds",
+    "oregon",
+    "oregonhowl"
+  ],
   "author": "Ricardo Morin",
   "license": "MIT",
   "devDependencies": {
@@ -34,6 +38,7 @@
     "webpack-dev-server": "^4.11.0"
   },
   "dependencies": {
+    "@creativebulma/bulma-collapsible": "^1.0.4",
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
     "@fortawesome/free-brands-svg-icons": "^6.2.0",
     "@fortawesome/free-regular-svg-icons": "^6.2.0",

@@ -1,4 +1,5 @@
 //import $ from 'jQuery'
+import bulmaCollapsible from '@creativebulma/bulma-collapsible'
 
 import L from 'leaflet'
 import leafletPip from '@mapbox/leaflet-pip'
@@ -216,11 +217,12 @@ async function setUpWatershedsLayer() {
 
           document.getElementById('total-population').innerHTML = `Total: ${result[0].totalPopulation.toLocaleString()}`
 
-          result.forEach(item => {
+          result.forEach((item, idx) => {
             if (item.population) {
-              wsList.innerHTML += populationItem({provider: item.provider, population: item.population.toLocaleString()})
+              wsList.innerHTML += populationItem({row: idx, provider: item.provider, population: item.population.toLocaleString()})
             }
           })
+          bulmaCollapsible.attach('.is-collapsible')
         })
       }
     }
