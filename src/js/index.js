@@ -40,6 +40,7 @@ L.Icon.Default.mergeOptions({
 
 let map = L.map('map', {center:[44, -120.5], zoom: 7, minZoom: 6, doubleClickZoom: false})
 let marker
+let selectedWatershed
 
 map.setMaxBounds([[41, -126], [47, -115]])
 
@@ -193,66 +194,64 @@ async function setUpWatershedsLayer() {
   let wsList = document.getElementById('ws-list')
   let data = await getGeoJson('/data/watersheds.json')
   let watersheds = L.geoJSON(data, {
-      style: function (f) {
-        let style = {...config.watershedsStyle} // Clone
+    style: function (f) { return watershedStyle(f) },
+    attribution: config.watershedsAttribution,
+    onEachFeature: function (f, l) {
+      l.on('click', function(e) {
+        clearMarker()
+        marker = L.marker(e.latlng).addTo(map)
+        document.getElementById('data-container').style.display='block'
 
-        if (f.properties.POP_EST_19 === f.properties.POP_TOTAL) {
-          style.fillOpacity = 0.2
-        }
-        return style
-      },
-      attribution: config.watershedsAttribution,
-      onEachFeature: function (f, l) {
-        l.on('click', function(e) {
-          clearMarker()
-          marker = L.marker(e.latlng).addTo(map)
-          document.getElementById('data-container').style.display='block'
 
-          let result = leafletPip.pointInLayer(e.latlng, watersheds).map(item => (
-            {
-              provider: item.feature.properties.WATER_PROV,
-              population: item.feature.properties.POP_EST_19,
-              city: item.feature.properties.CITY_SERV.toLowerCase().replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase()),
-              totalPopulation: item.feature.properties.POP_TOTAL,
-              source: item.feature.properties.SRC_LABEL,
-              subbasin: item.feature.properties.SUBBASIN_N
-            }
-          )).sort((a, b) => b.totalPopulation - a.totalPopulation)
+        let result = leafletPip.pointInLayer(e.latlng, watersheds).sort((a, b) => b.feature.properties.POP_TOTAL - a.feature.properties.POP_TOTAL)
 
-          document.getElementById('total-population').innerHTML = `Total: ${result[0].totalPopulation.toLocaleString()}`
+        document.getElementById('total-population').innerHTML = `Total: ${result[0].feature.properties.POP_TOTAL.toLocaleString()}`
 
-          result.forEach((item, idx) => {
-            if (item.population) {
-              wsList.innerHTML += populationItem(
-                {
-                  row: idx,
-                  provider: item.provider,
-                  population: item.population.toLocaleString(),
-                  city: item.city,
-                  source: item.source,
-                  subbasin: item.subbasin
-                }
-              )
-            }
+        result.forEach((item, idx) => {
+          if (item.feature.properties.POP_EST_19) {
+            wsList.innerHTML += populationItem(
+              {
+                isFirst: idx === 0,
+                row: idx,
+                provider: item.feature.properties.WATER_PROV,
+                population: item.feature.properties.POP_EST_19.toLocaleString(),
+                city: item.feature.properties.CITY_SERV.toLowerCase().replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase()),
+                source: item.feature.properties.SRC_LABEL,
+                subbasin: item.feature.properties.SUBBASIN_N
+              }
+            )
+          }
+        })
+        selectedWatershed = result[0]
+        selectedWatershed.setStyle({...config.selectedWatershedStyle})
+        bulmaCollapsible.attach('.is-collapsible').forEach(c => {
+          c.on('after:expand', (e) => {
+            document.getElementById(e.element.id + '-angle').innerHTML = angleIcon({upOrDown: 'up'})
           })
-          bulmaCollapsible.attach('.is-collapsible').forEach(c => {
-            c.on('after:expand', (e) => {
-              document.getElementById(e.element.id + '-angle').innerHTML = angleIcon({upOrDown: 'up'})
-            })
-            c.on('after:collapse', (e) => {
-              document.getElementById(e.element.id + '-angle').innerHTML = angleIcon({upOrDown: 'down'})
-            })
+          c.on('after:collapse', (e) => {
+            document.getElementById(e.element.id + '-angle').innerHTML = angleIcon({upOrDown: 'down'})
           })
         })
-      }
+      })
     }
-  )
+  })
   watersheds.addTo(map)
+}
+
+function watershedStyle(f) {
+  let style = {...config.watershedsStyle} // Clone
+
+  if (f.properties.POP_EST_19 === f.properties.POP_TOTAL) {
+    style.fillOpacity = 0.2
+  }
+  return style
 }
 
 function clearMarker() {
   if (marker) {
     map.removeLayer(marker)
+    selectedWatershed.setStyle(watershedStyle(selectedWatershed.feature))
+
     document.getElementById('ws-list').innerHTML = ''
     document.getElementById('total-population').innerHTML = ''
     document.getElementById('data-container').style.display='none'
