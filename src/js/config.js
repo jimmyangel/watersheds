@@ -76,6 +76,13 @@ export var config = {
     [41.9918, -124.7035],
     [46.2991, -116.4635]
   ],
+  mapInitialSettings: {
+    center:[44, -120.5],
+    zoom: 7,
+    minZoom: 6,
+    doubleClickZoom: false
+  },
+  maxBounds: [[41, -126], [47, -115]],
   watershedsStyle: {
     color: '#2F4F4F',
     fillColor: '#AFEEEE',

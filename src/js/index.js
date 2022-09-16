@@ -40,10 +40,10 @@ L.Icon.Default.mergeOptions({
 
 let selectedWatersheds = null
 
-let map = L.map('map', {center:[44, -120.5], zoom: 7, minZoom: 6, doubleClickZoom: false})
+let map = L.map('map', config.mapInitialSettings)
 let marker
 
-map.setMaxBounds([[41, -126], [47, -115]])
+map.setMaxBounds(config.maxBounds)
 
 document.getElementById('clear-marker').addEventListener('click', clearMarker)
 
