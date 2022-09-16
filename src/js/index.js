@@ -224,6 +224,7 @@ async function setUpWatershedsLayer() {
           }
           item.setStyle({...config.selectedWatershedStyle})
         })
+        selectedWatersheds[0].bringToFront()
 
         bulmaCollapsible.attach('.is-collapsible').forEach(c => {
           c.on('after:expand', (e) => {
