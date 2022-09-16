@@ -34,7 +34,9 @@ export var config = {
         format: 'png32',
         layers: [0],
         showLabels: true,
-        attribution: 'Oregon DEQ'
+        minZoom: 9,
+        attribution: 'Oregon DEQ',
+        pane: 'trgrid'
       },
       name: 'Oregon DEQ Hydrography',
       type: 'esriimg'
@@ -81,6 +83,6 @@ export var config = {
     fillOpacity: 0,
     opacity: 0.65
   },
-  selectedWatershedStyle: {fillOpacity: 0.5, fillColor: '#4682b4'},
+  selectedWatershedStyle: {fillOpacity: 0.2, fillColor: '#aaaaaa', color: '#834C24', weight: 2},
   watershedsAttribution: 'Oregon Wild'
 }

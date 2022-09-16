@@ -38,9 +38,10 @@ L.Icon.Default.mergeOptions({
   shadowUrl: shadowUrl
 })
 
+let selectedWatersheds = null
+
 let map = L.map('map', {center:[44, -120.5], zoom: 7, minZoom: 6, doubleClickZoom: false})
 let marker
-let selectedWatershed
 
 map.setMaxBounds([[41, -126], [47, -115]])
 
@@ -203,11 +204,11 @@ async function setUpWatershedsLayer() {
         document.getElementById('data-container').style.display='block'
 
 
-        let result = leafletPip.pointInLayer(e.latlng, watersheds).sort((a, b) => b.feature.properties.POP_TOTAL - a.feature.properties.POP_TOTAL)
+        selectedWatersheds = leafletPip.pointInLayer(e.latlng, watersheds).sort((a, b) => b.feature.properties.POP_TOTAL - a.feature.properties.POP_TOTAL)
 
-        document.getElementById('total-population').innerHTML = `Total: ${result[0].feature.properties.POP_TOTAL.toLocaleString()}`
+        document.getElementById('total-population').innerHTML = `Total: ${selectedWatersheds[0].feature.properties.POP_TOTAL.toLocaleString()}`
 
-        result.forEach((item, idx) => {
+        selectedWatersheds.forEach((item, idx) => {
           if (item.feature.properties.POP_EST_19) {
             wsList.innerHTML += populationItem(
               {
@@ -221,9 +222,9 @@ async function setUpWatershedsLayer() {
               }
             )
           }
+          item.setStyle({...config.selectedWatershedStyle})
         })
-        selectedWatershed = result[0]
-        selectedWatershed.setStyle({...config.selectedWatershedStyle})
+
         bulmaCollapsible.attach('.is-collapsible').forEach(c => {
           c.on('after:expand', (e) => {
             document.getElementById(e.element.id + '-angle').innerHTML = angleIcon({upOrDown: 'up'})
@@ -250,7 +251,10 @@ function watershedStyle(f) {
 function clearMarker() {
   if (marker) {
     map.removeLayer(marker)
-    selectedWatershed.setStyle(watershedStyle(selectedWatershed.feature))
+
+    if (selectedWatersheds) selectedWatersheds.forEach(w => w.setStyle(watershedStyle(w.feature)))
+
+    selectedWatersheds = null
 
     document.getElementById('ws-list').innerHTML = ''
     document.getElementById('total-population').innerHTML = ''
