@@ -1,4 +1,3 @@
-//import $ from 'jQuery'
 import bulmaCollapsible from '@creativebulma/bulma-collapsible'
 
 import L from 'leaflet'
