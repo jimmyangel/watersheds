@@ -41,11 +41,10 @@ L.Icon.Default.mergeOptions({
 let selectedWatersheds = null
 
 let map = L.map('map', config.mapInitialSettings)
+
 let marker
 
 map.setMaxBounds(config.maxBounds)
-
-document.getElementById('clear-marker').addEventListener('click', clearMarker)
 
 setUpCustomPanes()
 setUpResetControl()
@@ -61,7 +60,8 @@ function setUpResetControl() {
     return this._div
   };
   control.addTo(map)
-  document.getElementById('resetControl').addEventListener('click', function() {
+  document.getElementById('resetControl').addEventListener('click', function(e) {
+    L.DomEvent.stopPropagation(e)
     map.flyToBounds(config.oregonBbox)
     return false
   })
@@ -191,6 +191,7 @@ function setUpAboutControl() {
 }
 
 async function setUpWatershedsLayer() {
+  map.on('click', clearMarker)
 
   let wsList = document.getElementById('ws-list')
   let data = await getGeoJson('/data/watersheds.json')
@@ -199,6 +200,7 @@ async function setUpWatershedsLayer() {
     attribution: config.watershedsAttribution,
     onEachFeature: function (f, l) {
       l.on('click', function(e) {
+        L.DomEvent.stopPropagation(e)
         clearMarker()
         marker = L.marker(e.latlng).addTo(map)
         document.getElementById('data-container').style.display='block'
@@ -209,19 +211,17 @@ async function setUpWatershedsLayer() {
         document.getElementById('total-population').innerHTML = `Total: ${selectedWatersheds[0].feature.properties.POP_TOTAL.toLocaleString()}`
 
         selectedWatersheds.forEach((item, idx) => {
-          if (item.feature.properties.POP_EST_19) {
-            wsList.innerHTML += populationItem(
-              {
-                isFirst: idx === 0,
-                row: idx,
-                provider: item.feature.properties.WATER_PROV,
-                population: item.feature.properties.POP_EST_19.toLocaleString(),
-                city: item.feature.properties.CITY_SERV.toLowerCase().replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase()),
-                source: item.feature.properties.SRC_LABEL,
-                subbasin: item.feature.properties.SUBBASIN_N
-              }
-            )
-          }
+          wsList.innerHTML += populationItem(
+            {
+              isFirst: idx === 0,
+              row: idx,
+              provider: item.feature.properties.WATER_PROV,
+              population: item.feature.properties.POP_EST_19.toLocaleString(),
+              city: item.feature.properties.CITY_SERV.toLowerCase().replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase()),
+              source: item.feature.properties.SRC_LABEL,
+              subbasin: item.feature.properties.SUBBASIN_N
+            }
+          )
           item.setStyle({...config.selectedWatershedStyle})
         })
         selectedWatersheds[0].bringToFront()
