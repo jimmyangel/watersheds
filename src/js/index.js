@@ -208,7 +208,7 @@ async function setUpWatershedsLayer() {
 
         selectedWatersheds = leafletPip.pointInLayer(e.latlng, watersheds).sort((a, b) => b.feature.properties.POP_TOTAL - a.feature.properties.POP_TOTAL)
 
-        //document.getElementById('total-population').innerHTML = `Total: ${selectedWatersheds[0].feature.properties.POP_TOTAL.toLocaleString()}`
+        document.getElementById('total-population').innerHTML = `Total: ${selectedWatersheds[0].feature.properties.POP_TOTAL.toLocaleString()}`
 
         selectedWatersheds.forEach((item, idx) => {
           wsList.innerHTML += populationItem(
@@ -269,7 +269,7 @@ function clearMarker() {
     selectedWatersheds = null
 
     document.getElementById('ws-list').innerHTML = ''
-    //document.getElementById('total-population').innerHTML = ''
+    document.getElementById('total-population').innerHTML = ''
     document.getElementById('data-container').style.display='none'
   }
 }

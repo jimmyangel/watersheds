@@ -1,11 +1,10 @@
 <div class="is-flex is-justify-content-space-between">
-  <a href="#population-item-{{row}}" class="panel-block has-text-weight-semibold" data-action="collapse"><span {{#if isFirst}}style="text-decoration-line: underline; text-decoration-style: dotted;"{{/if}}>{{city}} ({{totalPopulation}})<span></a>
+  <a href="#population-item-{{row}}" class="panel-block has-text-weight-semibold" data-action="collapse"><span {{#if isFirst}}style="text-decoration-line: underline; text-decoration-style: dotted;"{{/if}}>{{city}} ({{population}})<span></a>
   <a id="population-item-{{row}}-angle" href="#population-item-{{row}}" class="panel-block has-text-weight-semibold" data-action="collapse"><i class="fa-solid fa-angle-down"></i></a>
 </div>
 <div id="population-item-{{row}}" class="is-collapsible">
   <ul style="padding-left: 9px; padding-right: 9px;">
     <li><span class="has-text-weight-semibold">Provider:</span> {{provider}}</li>
-    <li><span class="has-text-weight-semibold">Population:</span> {{population}}</li>
     <li><span class="has-text-weight-semibold">Source:</span> {{source}}</li>
     <li><span class="has-text-weight-semibold">Subbasin:</span> {{subbasin}}</li>
   </ul>
