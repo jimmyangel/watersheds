@@ -72,3 +72,22 @@ html, body {
   margin-top: 0%;
   /*transition: margin 0s;*/
 }
+
+.text-dotted-underline {
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+}
+
+.population-item-list {
+  padding-left: 9px;
+  padding-right: 9px;
+}
+
+.about-control {
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.reset-control {
+  font-size: large;
+}
