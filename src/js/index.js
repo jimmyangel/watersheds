@@ -22,7 +22,7 @@ import aboutControl from '../templates/aboutControl.hbs'
 import aboutModal from '../templates/aboutModal.hbs'
 import populationItem from '../templates/populationItem.hbs'
 import angleIcon from '../templates/angleIcon.hbs'
-//import welcomeModal from '../templates/welcomeModal.hbs'
+import welcomeModal from '../templates/welcomeModal.hbs'
 
 import {version} from '../../package.json'
 
@@ -50,7 +50,7 @@ setUpResetControl()
 setUpLayerControl()
 setUpAboutControl()
 setUpWatershedsLayer()
-//displayWelcome()
+displayWelcome()
 
 function setUpResetControl() {
   let control = L.control({position: 'topleft'})
@@ -292,7 +292,7 @@ function clearMarker() {
   }
 }
 
-/*function displayWelcome() {
+function displayWelcome() {
   if (!inIframe() && !localStorage.getItem('noWelcome') && !(sessionStorage.getItem('hasSeenWelcome'))) {
 
     setTimeout(function() {
@@ -305,7 +305,7 @@ function clearMarker() {
 
     setTimeout(function() {
       map.closeModal()
-    }, 15000);
+    }, 10000);
 
     map.on('modal.hide', function() {
       if (document.getElementById('welcome-optout').checked) {
@@ -322,4 +322,4 @@ function inIframe() {
   } catch (e) {
     return true;
   }
-} */
+}
