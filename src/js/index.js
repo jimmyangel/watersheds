@@ -223,9 +223,11 @@ async function setUpWatershedsLayer() {
               subbasin: item.feature.properties.SUBBASIN_N
             }
           )
-          item.setStyle({...config.selectedWatershedStyle})
+          item.setStyle(selectedStyle(selectedWatersheds.length))
+
+          selectedWatersheds[selectedWatersheds.length - idx - 1].bringToFront()
         })
-        selectedWatersheds[0].bringToFront()
+        //selectedWatersheds[0].bringToFront()
 
         bulmaCollapsible.attach('.is-collapsible').forEach(c => {
           c.on('after:expand', (e) => {
@@ -248,6 +250,15 @@ function watershedStyle(f) {
     style.fillOpacity = 0.2
   }
   return style
+}
+
+function selectedStyle(n) {
+  console.log(n)
+  let s = {...config.selectedWatershedStyle}
+  s.fillOpacity = 0.4 / n
+  console.log(s.fillOpacity)
+
+  return s
 }
 
 function clearMarker() {
