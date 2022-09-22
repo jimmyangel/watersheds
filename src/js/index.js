@@ -193,7 +193,7 @@ function setUpAboutControl() {
 async function setUpWatershedsLayer() {
   map.on('click', clearMarker)
 
-  let wsList = document.getElementById('ws-list')
+  //let wsList = document.getElementById('ws-list')
   let data = await getGeoJson('/data/watersheds.json')
   let watersheds = L.geoJSON(data, {
     style: function (f) { return watershedStyle(f) },
@@ -211,36 +211,54 @@ async function setUpWatershedsLayer() {
         document.getElementById('total-population').innerHTML = `Total: ${selectedWatersheds[0].feature.properties.POP_TOTAL.toLocaleString()}`
 
         selectedWatersheds.forEach((item, idx) => {
-          wsList.innerHTML += populationItem(
-            {
-              isFirst: idx === 0,
-              row: idx,
-              provider: item.feature.properties.WATER_PROV,
-              population: item.feature.properties.POP_EST_19.toLocaleString(),
-              totalPopulation: item.feature.properties.POP_TOTAL.toLocaleString(),
-              city: item.feature.properties.CITY_SERV.toLowerCase().replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase()),
-              source: item.feature.properties.SRC_LABEL,
-              subbasin: item.feature.properties.SUBBASIN_N
-            }
-          )
           item.setStyle(selectedStyle(selectedWatersheds.length))
-
           selectedWatersheds[selectedWatersheds.length - idx - 1].bringToFront()
         })
-        //selectedWatersheds[0].bringToFront()
-
-        bulmaCollapsible.attach('.is-collapsible').forEach(c => {
-          c.on('after:expand', (e) => {
-            document.getElementById(e.element.id + '-angle').innerHTML = angleIcon({upOrDown: 'up'})
-          })
-          c.on('after:collapse', (e) => {
-            document.getElementById(e.element.id + '-angle').innerHTML = angleIcon({upOrDown: 'down'})
-          })
-        })
+        displayWatershedList()
       })
     }
   })
   watersheds.addTo(map)
+  document.getElementById('downstream').addEventListener('click', downstreamCheckClickHandler)
+}
+
+function displayWatershedList() {
+  let isSorted = !document.getElementById('downstream').checked
+  let wsList = document.getElementById('ws-list')
+  let listContent = selectedWatersheds.map((item, idx) => {
+    return {
+      isUnderlined: idx === 0,
+      row: idx,
+      provider: item.feature.properties.WATER_PROV,
+      population: item.feature.properties.POP_EST_19.toLocaleString(),
+      totalPopulation: item.feature.properties.POP_TOTAL.toLocaleString(),
+      populationNumber: item.feature.properties.POP_EST_19,
+      totalPopulationNumber: item.feature.properties.POP_TOTAL,
+      city: item.feature.properties.CITY_SERV.toLowerCase().replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase()),
+      source: item.feature.properties.SRC_LABEL,
+      subbasin: item.feature.properties.SUBBASIN_N
+    }
+  })
+  if (isSorted) listContent.sort((a, b) => b.populationNumber - a.populationNumber)
+
+  listContent.forEach(item => wsList.innerHTML += populationItem(item))
+  attachCollapsibleElements()
+}
+
+function downstreamCheckClickHandler() {
+  document.getElementById('ws-list').innerHTML = ''
+  displayWatershedList()
+}
+
+function attachCollapsibleElements() {
+  bulmaCollapsible.attach('.is-collapsible').forEach(c => {
+    c.on('after:expand', (e) => {
+      document.getElementById(e.element.id + '-angle').innerHTML = angleIcon({upOrDown: 'up'})
+    })
+    c.on('after:collapse', (e) => {
+      document.getElementById(e.element.id + '-angle').innerHTML = angleIcon({upOrDown: 'down'})
+    })
+  })
 }
 
 function watershedStyle(f) {
