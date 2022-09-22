@@ -22,7 +22,7 @@ import aboutControl from '../templates/aboutControl.hbs'
 import aboutModal from '../templates/aboutModal.hbs'
 import populationItem from '../templates/populationItem.hbs'
 import angleIcon from '../templates/angleIcon.hbs'
-
+//import welcomeModal from '../templates/welcomeModal.hbs'
 
 import {version} from '../../package.json'
 
@@ -50,6 +50,7 @@ setUpResetControl()
 setUpLayerControl()
 setUpAboutControl()
 setUpWatershedsLayer()
+//displayWelcome()
 
 function setUpResetControl() {
   let control = L.control({position: 'topleft'})
@@ -207,7 +208,7 @@ async function setUpWatershedsLayer() {
 
         selectedWatersheds = leafletPip.pointInLayer(e.latlng, watersheds).sort((a, b) => b.feature.properties.POP_TOTAL - a.feature.properties.POP_TOTAL)
 
-        document.getElementById('total-population').innerHTML = `Total: ${selectedWatersheds[0].feature.properties.POP_TOTAL.toLocaleString()}`
+        //document.getElementById('total-population').innerHTML = `Total: ${selectedWatersheds[0].feature.properties.POP_TOTAL.toLocaleString()}`
 
         selectedWatersheds.forEach((item, idx) => {
           wsList.innerHTML += populationItem(
@@ -216,6 +217,7 @@ async function setUpWatershedsLayer() {
               row: idx,
               provider: item.feature.properties.WATER_PROV,
               population: item.feature.properties.POP_EST_19.toLocaleString(),
+              totalPopulation: item.feature.properties.POP_TOTAL.toLocaleString(),
               city: item.feature.properties.CITY_SERV.toLowerCase().replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase()),
               source: item.feature.properties.SRC_LABEL,
               subbasin: item.feature.properties.SUBBASIN_N
@@ -257,7 +259,39 @@ function clearMarker() {
     selectedWatersheds = null
 
     document.getElementById('ws-list').innerHTML = ''
-    document.getElementById('total-population').innerHTML = ''
+    //document.getElementById('total-population').innerHTML = ''
     document.getElementById('data-container').style.display='none'
   }
 }
+
+/*function displayWelcome() {
+  if (!inIframe() && !localStorage.getItem('noWelcome') && !(sessionStorage.getItem('hasSeenWelcome'))) {
+
+    setTimeout(function() {
+      map.fire('modal', {
+        MODAL_CONTENT_CLS: 'welcome modal-content',
+        content: welcomeModal()
+      });
+      sessionStorage.setItem('hasSeenWelcome', true);
+    }, 1000);
+
+    setTimeout(function() {
+      map.closeModal()
+    }, 15000);
+
+    map.on('modal.hide', function() {
+      if (document.getElementById('welcome-optout').checked) {
+        localStorage.setItem('noWelcome', true);
+      }
+    });
+
+  }
+}
+
+function inIframe() {
+  try {
+    return window.self !== window.top;
+  } catch (e) {
+    return true;
+  }
+} */
