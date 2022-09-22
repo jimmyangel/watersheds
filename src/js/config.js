@@ -90,6 +90,6 @@ export var config = {
     fillOpacity: 0,
     opacity: 0.65
   },
-  selectedWatershedStyle: {fillOpacity: 0.2, fillColor: '#aaaaaa', color: '#834C24', weight: 2},
+  selectedWatershedStyle: {fillOpacity: 0.2, fillColor: '#aaaaaa', color: '#834C24', weight: 1.5, opacity: 1},
   watershedsAttribution: 'Oregon Wild'
 }
