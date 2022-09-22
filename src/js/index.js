@@ -256,7 +256,6 @@ function selectedStyle(n) {
   let maxOpacity = n <=3 ? 0.2 : 0.4
   let s = {...config.selectedWatershedStyle}
   s.fillOpacity = maxOpacity / n
-  console.log(s.fillOpacity)
 
   return s
 }
