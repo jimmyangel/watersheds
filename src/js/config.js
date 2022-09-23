@@ -90,6 +90,16 @@ export var config = {
     fillOpacity: 0,
     opacity: 0.65
   },
+  stripesStyleOptions: {
+    angle: -45,
+    color: 'black',
+    //spaceColor: '#BA4A00',
+    height: 7,
+    weight: 2,
+    opacity: 1
+    //spaceWeight: 1,
+    //spaceOpacity: 0.7
+  },
   selectedWatershedStyle: {fillOpacity: 0.2, fillColor: '#aaaaaa', color: '#834C24', weight: 1.5, opacity: 1},
   watershedsAttribution: 'Oregon Wild'
 }

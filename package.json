@@ -1,6 +1,6 @@
 {
   "name": "watersheds",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Oregon surface drinking water watersheds",
   "main": "index.js",
   "scripts": {
@@ -48,6 +48,7 @@
     "esri-leaflet": "^3.0.8",
     "handlebars": "^4.7.7",
     "leaflet": "^1.8.0",
-    "leaflet-modal": "^0.2.0"
+    "leaflet-modal": "^0.2.0",
+    "leaflet.pattern": "git+https://github.com/jimmyangel/Leaflet.pattern.git"
   }
 }

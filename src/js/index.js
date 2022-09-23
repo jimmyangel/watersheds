@@ -3,6 +3,7 @@ import bulmaCollapsible from '@creativebulma/bulma-collapsible'
 import L from 'leaflet'
 import leafletPip from '@mapbox/leaflet-pip'
 import 'leaflet-modal'
+import 'leaflet.pattern';
 
 import {config} from './config.js'
 
@@ -40,6 +41,7 @@ L.Icon.Default.mergeOptions({
 let selectedWatersheds = null
 
 let map = L.map('map', config.mapInitialSettings)
+let stripes = new L.StripePattern(config.stripesStyleOptions); stripes.addTo(map);
 
 let marker
 
@@ -247,6 +249,9 @@ function displayWatershedList() {
 
 function downstreamCheckClickHandler() {
   document.getElementById('ws-list').innerHTML = ''
+  for (let i=0; i < selectedWatersheds.length; i++) {
+    unHighlightWatershed(i)
+  }
   displayWatershedList()
 }
 
@@ -254,11 +259,21 @@ function attachCollapsibleElements() {
   bulmaCollapsible.attach('.is-collapsible').forEach(c => {
     c.on('after:expand', (e) => {
       document.getElementById(e.element.id + '-angle').innerHTML = angleIcon({upOrDown: 'up'})
+      highlightWatershed(e.element.id.split('-').pop())
     })
     c.on('after:collapse', (e) => {
       document.getElementById(e.element.id + '-angle').innerHTML = angleIcon({upOrDown: 'down'})
+      unHighlightWatershed(e.element.id.split('-').pop())
     })
   })
+}
+
+function highlightWatershed(i) {
+  selectedWatersheds[i].setStyle({fillOpacity: 0.4, fillPattern: stripes})
+}
+
+function unHighlightWatershed(i) {
+  selectedWatersheds[i].setStyle({...selectedStyle(selectedWatersheds.length), fillPattern: null})
 }
 
 function watershedStyle(f) {
@@ -305,7 +320,7 @@ function displayWelcome() {
 
     setTimeout(function() {
       map.closeModal()
-    }, 10000);
+    }, 15000);
 
     map.on('modal.hide', function() {
       if (document.getElementById('welcome-optout').checked) {
