@@ -249,9 +249,7 @@ function displayWatershedList() {
 
 function downstreamCheckClickHandler() {
   document.getElementById('ws-list').innerHTML = ''
-  for (let i=0; i < selectedWatersheds.length; i++) {
-    unHighlightWatershed(i)
-  }
+  unHighlightAllWatersheds()
   displayWatershedList()
 }
 
@@ -276,6 +274,12 @@ function unHighlightWatershed(i) {
   selectedWatersheds[i].setStyle({...selectedStyle(selectedWatersheds.length), fillPattern: null})
 }
 
+function unHighlightAllWatersheds() {
+  for (let i=0; i < selectedWatersheds.length; i++) {
+    unHighlightWatershed(i)
+  }
+}
+
 function watershedStyle(f) {
   let style = {...config.watershedsStyle} // Clone
 
@@ -297,7 +301,10 @@ function clearMarker() {
   if (marker) {
     map.removeLayer(marker)
 
-    if (selectedWatersheds) selectedWatersheds.forEach(w => w.setStyle(watershedStyle(w.feature)))
+    if (selectedWatersheds) {
+      unHighlightAllWatersheds()
+      selectedWatersheds.forEach(w => w.setStyle(watershedStyle(w.feature)))
+    }
 
     selectedWatersheds = null
 
