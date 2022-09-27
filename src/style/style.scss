@@ -39,6 +39,10 @@ html, body {
   color: gray;
 }
 
+.leaflet-overlay-pane > svg.leaflet-zoom-animated {
+  opacity: 0.5;
+}
+
 .info-panel {
     background: rgba(255,255,255,0.8);
     border-radius: 3px;

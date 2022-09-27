@@ -212,14 +212,15 @@ async function setUpWatershedsLayer() {
 
         document.getElementById('total-population').innerHTML = `Total: ${selectedWatersheds[0].feature.properties.POP_TOTAL.toLocaleString()}`
 
-        selectedWatersheds.forEach((item, idx) => {
+        selectedWatersheds.forEach((item) => {
           item.setStyle(selectedStyle(selectedWatersheds.length))
-          selectedWatersheds[selectedWatersheds.length - idx - 1].bringToFront()
+          //selectedWatersheds[selectedWatersheds.length - idx - 1].bringToFront()
         })
         displayWatershedList()
       })
     }
   })
+  console.log(watersheds)
   watersheds.addTo(map)
   map.flyToBounds(config.oregonBbox)
   document.getElementById('downstream').addEventListener('click', downstreamCheckClickHandler)
@@ -281,19 +282,19 @@ function unHighlightAllWatersheds() {
   }
 }
 
-function watershedStyle(f) {
+function watershedStyle() {
   let style = {...config.watershedsStyle} // Clone
 
-  if (f.properties.POP_EST_19 === f.properties.POP_TOTAL) {
+  /*if (f.properties.POP_EST_19 === f.properties.POP_TOTAL) {
     style.fillOpacity = 0.2
-  }
+  } */
   return style
 }
 
-function selectedStyle(n) {
-  let maxOpacity = n <=3 ? 0.2 : 0.4
+function selectedStyle() {
+  //let maxOpacity = n <=3 ? 0.2 : 0.4
   let s = {...config.selectedWatershedStyle}
-  s.fillOpacity = maxOpacity / n
+  s.fillOpacity = 1
 
   return s
 }

@@ -87,8 +87,8 @@ export var config = {
     color: '#2F4F4F',
     fillColor: '#AFEEEE',
     weight: 1,
-    fillOpacity: 0,
-    opacity: 0.65
+    fillOpacity: 1,
+    opacity: 1
   },
   stripesStyleOptions: {
     angle: -45,
@@ -100,6 +100,6 @@ export var config = {
     //spaceWeight: 1,
     //spaceOpacity: 0.7
   },
-  selectedWatershedStyle: {fillOpacity: 0.2, fillColor: '#aaaaaa', color: '#834C24', weight: 1.5, opacity: 1},
+  selectedWatershedStyle: {fillOpacity: 1, fillColor: '#aaaaaa', color: '#834C24', weight: 1.5, opacity: 1},
   watershedsAttribution: 'Oregon Wild'
 }
