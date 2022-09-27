@@ -92,7 +92,7 @@ export var config = {
   },
   stripesStyleOptions: {
     angle: -45,
-    color: 'black',
+    color: 'purple',
     //spaceColor: '#BA4A00',
     height: 7,
     weight: 2,

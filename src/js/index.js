@@ -269,7 +269,7 @@ function attachCollapsibleElements() {
 }
 
 function highlightWatershed(i) {
-  selectedWatersheds[i].setStyle({fillOpacity: 0.4, fillPattern: stripes})
+  selectedWatersheds[i].setStyle({fillOpacity: 1, fillPattern: stripes})
 }
 
 function unHighlightWatershed(i) {
