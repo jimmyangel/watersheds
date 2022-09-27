@@ -221,6 +221,7 @@ async function setUpWatershedsLayer() {
     }
   })
   watersheds.addTo(map)
+  map.flyToBounds(config.oregonBbox)
   document.getElementById('downstream').addEventListener('click', downstreamCheckClickHandler)
 }
 
