@@ -207,10 +207,9 @@ function setUpAboutControl() {
 async function setUpWatershedsLayer() {
   map.on('click', clearMarker)
 
-  //let wsList = document.getElementById('ws-list')
-  let data = await getGeoJson('/data/watersheds.json')
+  let data = await getGeoJson('/data/watersheds.json') // Consider sorting here in case we forget to sort source
   let watersheds = L.geoJSON(data, {
-    style: function (f) { return watershedStyle(f) },
+    style: {...config.watershedsStyle},
     attribution: config.watershedsAttribution,
     onEachFeature: function (f, l) {
       l.on('click', function(e) {
@@ -225,8 +224,7 @@ async function setUpWatershedsLayer() {
         document.getElementById('total-population').innerHTML = `Total: ${selectedWatersheds[0].feature.properties.POP_TOTAL.toLocaleString()}`
 
         selectedWatersheds.forEach((item) => {
-          item.setStyle(selectedStyle(selectedWatersheds.length))
-          //selectedWatersheds[selectedWatersheds.length - idx - 1].bringToFront()
+          item.setStyle({...config.selectedWatershedStyle})
         })
         displayWatershedList()
       })
@@ -284,7 +282,7 @@ function highlightWatershed(i) {
 }
 
 function unHighlightWatershed(i) {
-  selectedWatersheds[i].setStyle({...selectedStyle(selectedWatersheds.length), fillPattern: null})
+  selectedWatersheds[i].setStyle({...config.selectedWatershedStyle, fillPattern: null})
 }
 
 function unHighlightAllWatersheds() {
@@ -293,30 +291,13 @@ function unHighlightAllWatersheds() {
   }
 }
 
-function watershedStyle() {
-  let style = {...config.watershedsStyle} // Clone
-
-  /*if (f.properties.POP_EST_19 === f.properties.POP_TOTAL) {
-    style.fillOpacity = 0.2
-  } */
-  return style
-}
-
-function selectedStyle() {
-  //let maxOpacity = n <=3 ? 0.2 : 0.4
-  let s = {...config.selectedWatershedStyle}
-  s.fillOpacity = 1
-
-  return s
-}
-
 function clearMarker() {
   if (marker) {
     map.removeLayer(marker)
 
     if (selectedWatersheds) {
       unHighlightAllWatersheds()
-      selectedWatersheds.forEach(w => w.setStyle(watershedStyle(w.feature)))
+      selectedWatersheds.forEach(w => w.setStyle({...config.watershedsStyle}))
     }
 
     selectedWatersheds = null
