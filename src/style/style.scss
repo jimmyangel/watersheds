@@ -9,6 +9,7 @@
 @import "~bulma/sass/components/panel.sass";
 
 @import '~@creativebulma/bulma-collapsible';
+@import '~bulma-slider';
 
 html, body {
   margin: 0;
@@ -37,10 +38,6 @@ html, body {
 
 *.leaflet-control-layers-selector[disabled] + span {
   color: gray;
-}
-
-.leaflet-overlay-pane > svg.leaflet-zoom-animated {
-  opacity: 0.4;
 }
 
 .info-panel {

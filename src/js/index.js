@@ -1,4 +1,5 @@
 import bulmaCollapsible from '@creativebulma/bulma-collapsible'
+import blumaSlider from 'bulma-slider'
 
 import L from 'leaflet'
 import leafletPip from '@mapbox/leaflet-pip'
@@ -47,12 +48,23 @@ let marker
 
 map.setMaxBounds(config.maxBounds)
 
+
 setUpCustomPanes()
 setUpResetControl()
 setUpLayerControl()
 setUpAboutControl()
+setupInfoPanel()
 setUpWatershedsLayer()
 displayWelcome()
+
+function setupInfoPanel() {
+  blumaSlider.attach()
+  document.getElementById('opacity-slider').value = config.defaultLayerOpacity * 100
+  document.querySelector('.leaflet-overlay-pane > svg.leaflet-zoom-animated').style.opacity = config.defaultLayerOpacity
+  document.getElementById('opacity-slider').addEventListener('input', function() {
+    document.querySelector('.leaflet-overlay-pane > svg.leaflet-zoom-animated').style.opacity=this.value/100
+  })
+}
 
 function setUpResetControl() {
   let control = L.control({position: 'topleft'})
@@ -220,7 +232,6 @@ async function setUpWatershedsLayer() {
       })
     }
   })
-  console.log(watersheds)
   watersheds.addTo(map)
   map.flyToBounds(config.oregonBbox)
   document.getElementById('downstream').addEventListener('click', downstreamCheckClickHandler)
