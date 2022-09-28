@@ -1,6 +1,6 @@
 {
   "name": "watersheds",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "Oregon surface drinking water watersheds",
   "main": "index.js",
   "scripts": {
