@@ -87,12 +87,12 @@ export var config = {
     color: '#2F4F4F',
     fillColor: '#AFEEEE',
     weight: 1,
-    fillOpacity: 0,
-    opacity: 0.65
+    fillOpacity: 1,
+    opacity: 1
   },
   stripesStyleOptions: {
     angle: -45,
-    color: 'black',
+    color: 'purple',
     //spaceColor: '#BA4A00',
     height: 7,
     weight: 2,
@@ -100,6 +100,7 @@ export var config = {
     //spaceWeight: 1,
     //spaceOpacity: 0.7
   },
-  selectedWatershedStyle: {fillOpacity: 0.2, fillColor: '#aaaaaa', color: '#834C24', weight: 1.5, opacity: 1},
+  defaultLayerOpacity: 0.5,
+  selectedWatershedStyle: {fillOpacity: 1, fillColor: '#aaaaaa', color: '#834C24', weight: 1.5, opacity: 1},
   watershedsAttribution: 'Oregon Wild'
 }

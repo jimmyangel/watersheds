@@ -1,6 +1,6 @@
 {
   "name": "watersheds",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "description": "Oregon surface drinking water watersheds",
   "main": "index.js",
   "scripts": {
@@ -45,6 +45,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@mapbox/leaflet-pip": "^1.1.0",
     "bulma": "^0.9.4",
+    "bulma-slider": "^2.0.5",
     "esri-leaflet": "^3.0.8",
     "handlebars": "^4.7.7",
     "leaflet": "^1.8.0",

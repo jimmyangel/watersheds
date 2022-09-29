@@ -1,4 +1,5 @@
 import bulmaCollapsible from '@creativebulma/bulma-collapsible'
+import blumaSlider from 'bulma-slider'
 
 import L from 'leaflet'
 import leafletPip from '@mapbox/leaflet-pip'
@@ -24,6 +25,7 @@ import aboutModal from '../templates/aboutModal.hbs'
 import populationItem from '../templates/populationItem.hbs'
 import angleIcon from '../templates/angleIcon.hbs'
 import welcomeModal from '../templates/welcomeModal.hbs'
+import legend from '../templates/legend.hbs'
 
 import {version} from '../../package.json'
 
@@ -47,12 +49,30 @@ let marker
 
 map.setMaxBounds(config.maxBounds)
 
+
 setUpCustomPanes()
 setUpResetControl()
 setUpLayerControl()
 setUpAboutControl()
+setupInfoPanel()
 setUpWatershedsLayer()
 displayWelcome()
+
+function setupInfoPanel() {
+  document.getElementById('legend').innerHTML = legend({
+    opacity: config.defaultLayerOpacity,
+    allFillColor: config.watershedsStyle.fillColor, allBorderColor: config.watershedsStyle.color,
+    connectedFillColor: config.selectedWatershedStyle.fillColor, connectedBorderColor: config.selectedWatershedStyle.color,
+    singleFillColor: config.selectedWatershedStyle.fillColor, singleBorderColor: config.selectedWatershedStyle.color, singleStripeColor: config.stripesStyleOptions.color
+  })
+  blumaSlider.attach()
+  document.getElementById('opacity-slider').value = config.defaultLayerOpacity * 100
+  document.querySelector('.leaflet-overlay-pane > svg.leaflet-zoom-animated').style.opacity = config.defaultLayerOpacity
+  document.getElementById('opacity-slider').addEventListener('input', function() {
+    document.querySelector('.leaflet-overlay-pane > svg.leaflet-zoom-animated').style.opacity=this.value/100
+    for (let e of document.getElementsByClassName('legend-item')) {e.style.opacity = this.value/100}
+  })
+}
 
 function setUpResetControl() {
   let control = L.control({position: 'topleft'})
@@ -195,10 +215,9 @@ function setUpAboutControl() {
 async function setUpWatershedsLayer() {
   map.on('click', clearMarker)
 
-  //let wsList = document.getElementById('ws-list')
-  let data = await getGeoJson('/data/watersheds.json')
+  let data = await getGeoJson('/data/watersheds.json') // Consider sorting here in case we forget to sort source
   let watersheds = L.geoJSON(data, {
-    style: function (f) { return watershedStyle(f) },
+    style: {...config.watershedsStyle},
     attribution: config.watershedsAttribution,
     onEachFeature: function (f, l) {
       l.on('click', function(e) {
@@ -212,9 +231,8 @@ async function setUpWatershedsLayer() {
 
         document.getElementById('total-population').innerHTML = `Total: ${selectedWatersheds[0].feature.properties.POP_TOTAL.toLocaleString()}`
 
-        selectedWatersheds.forEach((item, idx) => {
-          item.setStyle(selectedStyle(selectedWatersheds.length))
-          selectedWatersheds[selectedWatersheds.length - idx - 1].bringToFront()
+        selectedWatersheds.forEach((item) => {
+          item.setStyle({...config.selectedWatershedStyle})
         })
         displayWatershedList()
       })
@@ -268,11 +286,11 @@ function attachCollapsibleElements() {
 }
 
 function highlightWatershed(i) {
-  selectedWatersheds[i].setStyle({fillOpacity: 0.4, fillPattern: stripes})
+  selectedWatersheds[i].setStyle({fillOpacity: 1, fillPattern: stripes})
 }
 
 function unHighlightWatershed(i) {
-  selectedWatersheds[i].setStyle({...selectedStyle(selectedWatersheds.length), fillPattern: null})
+  selectedWatersheds[i].setStyle({...config.selectedWatershedStyle, fillPattern: null})
 }
 
 function unHighlightAllWatersheds() {
@@ -281,30 +299,13 @@ function unHighlightAllWatersheds() {
   }
 }
 
-function watershedStyle(f) {
-  let style = {...config.watershedsStyle} // Clone
-
-  if (f.properties.POP_EST_19 === f.properties.POP_TOTAL) {
-    style.fillOpacity = 0.2
-  }
-  return style
-}
-
-function selectedStyle(n) {
-  let maxOpacity = n <=3 ? 0.2 : 0.4
-  let s = {...config.selectedWatershedStyle}
-  s.fillOpacity = maxOpacity / n
-
-  return s
-}
-
 function clearMarker() {
   if (marker) {
     map.removeLayer(marker)
 
     if (selectedWatersheds) {
       unHighlightAllWatersheds()
-      selectedWatersheds.forEach(w => w.setStyle(watershedStyle(w.feature)))
+      selectedWatersheds.forEach(w => w.setStyle({...config.watershedsStyle}))
     }
 
     selectedWatersheds = null
