@@ -67,8 +67,10 @@ function setupInfoPanel() {
   })
   blumaSlider.attach()
   document.getElementById('opacity-slider').value = config.defaultLayerOpacity * 100
+  document.getElementById('opacity-percent').innerHTML = config.defaultLayerOpacity * 100
   document.querySelector('.leaflet-overlay-pane > svg.leaflet-zoom-animated').style.opacity = config.defaultLayerOpacity
   document.getElementById('opacity-slider').addEventListener('input', function() {
+    document.getElementById('opacity-percent').innerHTML = this.value
     document.querySelector('.leaflet-overlay-pane > svg.leaflet-zoom-animated').style.opacity=this.value/100
     for (let e of document.getElementsByClassName('legend-item')) {e.style.opacity = this.value/100}
   })
