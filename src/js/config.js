@@ -100,7 +100,7 @@ export var config = {
     //spaceWeight: 1,
     //spaceOpacity: 0.7
   },
-  defaultLayerOpacity: 0.4,
+  defaultLayerOpacity: 0.5,
   selectedWatershedStyle: {fillOpacity: 1, fillColor: '#aaaaaa', color: '#834C24', weight: 1.5, opacity: 1},
   watershedsAttribution: 'Oregon Wild'
 }

@@ -101,17 +101,30 @@ html, body {
   color: #0078A8 !important;
 }
 
-.legend-scale {
-  margin-bottom: -20px;
+.legend-container {
+  height: 60px;
+  margin-bottom: 30px;
 }
 
-.legend-scale ul {
+@media only screen and (min-width: 390px) {
+  .legend-container {
+    margin-bottom: -20px;
+  }
+}
+
+
+.legend {
+  @extend .has-text-centered;
+  @extend .is-size-7;
+}
+
+.legend ul {
   margin: auto;
   padding: 0;
   list-style: none;
 }
 
-.legend-scale ul li {
+.legend ul li {
   display: inline-block;
   margin-right: -4px;
   width: 60px;
@@ -125,5 +138,11 @@ ul.legend-items li span {
   display: inline-block;
   height: 15px;
   width: 60px;
-  opacity:0.8;
+}
+
+.opacity-slider-label {
+  @extend .has-text-centered;
+  @extend .is-size-7;
+  margin-top: -20px;
+  padding-bottom: 4px;
 }
