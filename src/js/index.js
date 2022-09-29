@@ -25,6 +25,7 @@ import aboutModal from '../templates/aboutModal.hbs'
 import populationItem from '../templates/populationItem.hbs'
 import angleIcon from '../templates/angleIcon.hbs'
 import welcomeModal from '../templates/welcomeModal.hbs'
+import legend from '../templates/legend.hbs'
 
 import {version} from '../../package.json'
 
@@ -58,11 +59,18 @@ setUpWatershedsLayer()
 displayWelcome()
 
 function setupInfoPanel() {
+  document.getElementById('legend').innerHTML = legend({
+    opacity: config.defaultLayerOpacity,
+    allFillColor: config.watershedsStyle.fillColor, allBorderColor: config.watershedsStyle.color,
+    connectedFillColor: config.selectedWatershedStyle.fillColor, connectedBorderColor: config.selectedWatershedStyle.color,
+    singleFillColor: config.selectedWatershedStyle.fillColor, singleBorderColor: config.selectedWatershedStyle.color, singleStripeColor: config.stripesStyleOptions.color
+  })
   blumaSlider.attach()
   document.getElementById('opacity-slider').value = config.defaultLayerOpacity * 100
   document.querySelector('.leaflet-overlay-pane > svg.leaflet-zoom-animated').style.opacity = config.defaultLayerOpacity
   document.getElementById('opacity-slider').addEventListener('input', function() {
     document.querySelector('.leaflet-overlay-pane > svg.leaflet-zoom-animated').style.opacity=this.value/100
+    for (let e of document.getElementsByClassName('legend-item')) {e.style.opacity = this.value/100}
   })
 }
 
