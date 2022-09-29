@@ -100,3 +100,30 @@ html, body {
 .license-link:hover {
   color: #0078A8 !important;
 }
+
+.legend-scale {
+  margin-bottom: -20px;
+}
+
+.legend-scale ul {
+  margin: auto;
+  padding: 0;
+  list-style: none;
+}
+
+.legend-scale ul li {
+  display: inline-block;
+  margin-right: -4px;
+  width: 60px;
+  margin-bottom: 6px;
+  text-align: center;
+  font-size: 80%;
+  list-style: none;
+}
+
+ul.legend-items li span {
+  display: inline-block;
+  height: 15px;
+  width: 60px;
+  opacity:0.8;
+}
