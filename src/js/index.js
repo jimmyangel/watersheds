@@ -217,7 +217,9 @@ function setUpAboutControl() {
 async function setUpWatershedsLayer() {
   map.on('click', clearMarker)
 
-  let data = await getGeoJson('/data/watersheds.json') // Consider sorting here in case we forget to sort source
+  let data = await getGeoJson('/data/watersheds.json')
+  data.features.sort((a, b) => a.properties.POP_TOTAL - b.properties.POP_TOTAL)
+
   let watersheds = L.geoJSON(data, {
     style: {...config.watershedsStyle},
     attribution: config.watershedsAttribution,
