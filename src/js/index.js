@@ -218,7 +218,12 @@ async function setUpWatershedsLayer() {
   map.on('click', clearMarker)
 
   let data = await getGeoJson('/data/watersheds.json')
-  data.features.sort((a, b) => a.properties.POP_TOTAL - b.properties.POP_TOTAL)
+  data.features.sort((a, b) => {
+    // We do this to force zero population watersheds to render higher
+    let aMod = a.properties.POP_EST_19 === 0 ? a.properties.POP_TOTAL + 1 : a.properties.POP_TOTAL
+    let bMod = b.properties.POP_EST_19 === 0 ? b.properties.POP_TOTAL + 1 : b.properties.POP_TOTAL
+    return aMod - bMod
+  })
 
   let watersheds = L.geoJSON(data, {
     style: {...config.watershedsStyle},
@@ -230,8 +235,12 @@ async function setUpWatershedsLayer() {
         marker = L.marker(e.latlng).addTo(map)
         document.getElementById('data-container').style.display='block'
 
-
-        selectedWatersheds = leafletPip.pointInLayer(e.latlng, watersheds).sort((a, b) => b.feature.properties.POP_TOTAL - a.feature.properties.POP_TOTAL)
+        selectedWatersheds = leafletPip.pointInLayer(e.latlng, watersheds).sort((a, b) => {
+          // We do this to force zero population watersheds to move higher on the selected watersheds list
+          let aMod = a.feature.properties.POP_EST_19 === 0 ? a.feature.properties.POP_TOTAL + 1 : a.feature.properties.POP_TOTAL
+          let bMod = b.feature.properties.POP_EST_19 === 0 ? b.feature.properties.POP_TOTAL + 1 : b.feature.properties.POP_TOTAL
+          return bMod - aMod
+        })
 
         document.getElementById('total-population').innerHTML = `Total: ${selectedWatersheds[0].feature.properties.POP_TOTAL.toLocaleString()}`
 
@@ -255,10 +264,9 @@ function displayWatershedList() {
       isUnderlined: idx === 0,
       row: idx,
       provider: item.feature.properties.WATER_PROV,
-      population: item.feature.properties.POP_EST_19.toLocaleString(),
+      population: item.feature.properties.POP_EST_19 === 0 ? 'N/A' : item.feature.properties.POP_EST_19.toLocaleString(),
       totalPopulation: item.feature.properties.POP_TOTAL.toLocaleString(),
       populationNumber: item.feature.properties.POP_EST_19,
-      totalPopulationNumber: item.feature.properties.POP_TOTAL,
       city: item.feature.properties.CITY_SERV.toLowerCase().replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase()),
       source: item.feature.properties.SRC_LABEL,
       subbasin: item.feature.properties.SUBBASIN_N
