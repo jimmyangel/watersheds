@@ -285,14 +285,20 @@ function downstreamCheckClickHandler() {
 }
 
 function attachCollapsibleElements() {
+  let expandedElement
   bulmaCollapsible.attach('.is-collapsible').forEach(c => {
     c.on('after:expand', (e) => {
+      if (expandedElement) {
+        expandedElement.bulmaCollapsible('collapse')
+      }
       document.getElementById(e.element.id + '-angle').innerHTML = angleIcon({upOrDown: 'up'})
+      expandedElement = c.element
       highlightWatershed(e.element.id.split('-').pop())
     })
     c.on('after:collapse', (e) => {
       document.getElementById(e.element.id + '-angle').innerHTML = angleIcon({upOrDown: 'down'})
       unHighlightWatershed(e.element.id.split('-').pop())
+      expandedElement = null
     })
   })
 }
