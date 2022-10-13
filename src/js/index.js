@@ -41,6 +41,7 @@ L.Icon.Default.mergeOptions({
 })
 
 let selectedWatersheds = null
+let expandedElement = null
 
 let map = L.map('map', config.mapInitialSettings)
 let stripes = new L.StripePattern(config.stripesStyleOptions); stripes.addTo(map);
@@ -285,7 +286,6 @@ function downstreamCheckClickHandler() {
 }
 
 function attachCollapsibleElements() {
-  let expandedElement
   bulmaCollapsible.attach('.is-collapsible').forEach(c => {
     c.on('after:expand', (e) => {
       if (expandedElement) {
