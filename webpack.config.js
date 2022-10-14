@@ -3,6 +3,7 @@ const webpack = require('webpack')
 const HtmlPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 
 //const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
@@ -59,5 +60,15 @@ module.exports = {
         use: ["source-map-loader"],
       },
     ]
-  }
+  },
+  optimization: {
+		minimizer: [new TerserPlugin({
+			terserOptions: {
+				keep_fnames: true,
+				output: {
+					comments: false,
+				}
+			}
+		})]
+	}
 };
