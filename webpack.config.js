@@ -64,10 +64,7 @@ module.exports = {
   optimization: {
 		minimizer: [new TerserPlugin({
 			terserOptions: {
-				keep_fnames: true,
-				output: {
-					comments: false,
-				}
+				keep_fnames: true
 			}
 		})]
 	}
