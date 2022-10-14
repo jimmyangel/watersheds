@@ -2,7 +2,7 @@
   <a href="#population-item-{{row}}" class="panel-block has-text-weight-semibold" data-action="collapse"><span {{#if isUnderlined}}class="text-dotted-underline"{{/if}}>{{city}} ({{population}})<span></a>
   <a id="population-item-{{row}}-angle" href="#population-item-{{row}}" class="panel-block has-text-weight-semibold" data-action="collapse"><i class="fa-solid fa-angle-down"></i></a>
 </div>
-<div id="population-item-{{row}}" class="is-collapsible">
+<div id="population-item-{{row}}" class="is-collapsible" data-parent="ws-list">
   <ul class="population-item-list">
     <li><span class="has-text-weight-semibold">Provider:</span> {{provider}}</li>
     <li><span class="has-text-weight-semibold">Source:</span> {{source}}</li>
