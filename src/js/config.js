@@ -93,12 +93,12 @@ export var config = {
   stripesStyleOptions: {
     angle: -45,
     color: 'purple',
-    //spaceColor: '#BA4A00',
+    spaceColor: '#aaaaaa',
     height: 7,
     weight: 2,
-    opacity: 1
-    //spaceWeight: 1,
-    //spaceOpacity: 0.7
+    opacity: 1,
+    spaceWeight: 5,
+    spaceOpacity: 1
   },
   defaultLayerOpacity: 0.5,
   selectedWatershedStyle: {fillOpacity: 1, fillColor: '#aaaaaa', color: '#834C24', weight: 1.5, opacity: 1},
