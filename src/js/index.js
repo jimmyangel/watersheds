@@ -26,6 +26,10 @@ import legend from '../templates/legend.hbs'
 
 import {version} from '../../package.json'
 
+import iconAngleDown from '../images/angle-down.svg'
+import iconAngleUp from '../images/angle-up.svg'
+import iconRefresh from '../images/arrows-rotate.svg'
+
 delete L.Icon.Default.prototype._getIconUrl
 
 L.Icon.Default.mergeOptions({
@@ -74,7 +78,7 @@ function setUpResetControl() {
   let control = L.control({position: 'topleft'})
   control.onAdd = function () {
     this._div = L.DomUtil.create('div', 'leaflet-control leaflet-bar reset')
-    this._div.innerHTML = resetControl({title: 'Reset View'})
+    this._div.innerHTML = resetControl({title: 'Reset View', iconRefresh: iconRefresh})
     return this._div
   };
   control.addTo(map)
@@ -268,7 +272,7 @@ function displayWatershedList() {
   })
   if (isSorted) listContent.sort((a, b) => b.populationNumber - a.populationNumber)
 
-  listContent.forEach(item => wsList.innerHTML += populationItem(item))
+  listContent.forEach(item => wsList.innerHTML += populationItem({...item, angleDown: iconAngleDown}))
   attachCollapsibleElements()
 }
 
@@ -281,11 +285,11 @@ function downstreamCheckClickHandler() {
 function attachCollapsibleElements() {
   bulmaCollapsible.attach('.is-collapsible').forEach(c => {
     c.on('after:expand', (e) => {
-      document.getElementById(e.element.id + '-angle').innerHTML = angleIcon({upOrDown: 'up'})
+      document.getElementById(e.element.id + '-angle').innerHTML = angleIcon({upOrDown: iconAngleUp})
       highlightWatershed(e.element.id.split('-').pop())
     })
     c.on('after:collapse', (e) => {
-      document.getElementById(e.element.id + '-angle').innerHTML = angleIcon({upOrDown: 'down'})
+      document.getElementById(e.element.id + '-angle').innerHTML = angleIcon({upOrDown: iconAngleDown})
       unHighlightWatershed(e.element.id.split('-').pop())
     })
   })
