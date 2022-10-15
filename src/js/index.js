@@ -47,6 +47,7 @@ let marker
 
 map.setMaxBounds(config.maxBounds)
 
+L.control.scale({metric: false}).addTo(map)
 
 setUpCustomPanes()
 setUpResetControl()
