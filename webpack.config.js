@@ -18,7 +18,7 @@ module.exports = {
     new HtmlPlugin({template: 'index.html',inject : true}),
     // new webpack.ProvidePlugin({$: 'jquery', jQuery: 'jquery', 'window.jQuery': 'jquery'}),
     new MiniCssExtractPlugin(),
-    new CopyWebpackPlugin({patterns: [{from: '../data', to: 'data'}]})
+    new CopyWebpackPlugin({patterns: [{from: '../data', to: 'data'}]}),
     //new BundleAnalyzerPlugin()
   ],
   devServer: {
@@ -36,7 +36,7 @@ module.exports = {
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
       },
       {
-        test: /\.(jpg|png|svg|gif)$/,
+        test: /\.(jpg|png|svg|gif|woff2|ttf)$/,
         type: 'asset/resource',
       },
       {
@@ -55,13 +55,14 @@ module.exports = {
         options: {inlineRequires: '/images/'}
       },
       {
-        test: /\.js$/,
+        test: /\.(js)$/,
         enforce: "pre",
         use: ["source-map-loader"],
-      },
+      }
     ]
   },
   optimization: {
+    concatenateModules: false,
 		minimizer: [new TerserPlugin({
 			terserOptions: {
 				keep_fnames: true

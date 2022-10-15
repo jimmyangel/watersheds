@@ -10,9 +10,6 @@ import {config} from './config.js'
 
 import {FeatureLayer, DynamicMapLayer} from 'esri-leaflet'
 
-import {library, dom} from '@fortawesome/fontawesome-svg-core'
-import {faArrowsRotate, faAngleDown, faAngleUp} from '@fortawesome/free-solid-svg-icons'
-
 import {getGeoJson} from './data.js'
 
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
@@ -28,9 +25,6 @@ import welcomeModal from '../templates/welcomeModal.hbs'
 import legend from '../templates/legend.hbs'
 
 import {version} from '../../package.json'
-
-library.add(faArrowsRotate, faAngleDown, faAngleUp)
-dom.watch()
 
 delete L.Icon.Default.prototype._getIconUrl
 
