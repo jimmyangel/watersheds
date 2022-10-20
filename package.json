@@ -1,6 +1,6 @@
 {
   "name": "watersheds",
-  "version": "0.7.5",
+  "version": "0.7.6",
   "description": "Oregon Drinking Watersheds",
   "main": "index.js",
   "scripts": {
