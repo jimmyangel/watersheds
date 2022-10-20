@@ -9,6 +9,7 @@
 
 @import '~@creativebulma/bulma-collapsible';
 @import '~bulma-slider';
+@import '@creativebulma/bulma-tooltip';
 
 html, body {
   margin: 0;
@@ -165,4 +166,9 @@ ul.legend-items li span {
   @extend .is-size-7;
   margin-top: -20px;
   padding-bottom: 4px;
+}
+
+.shifted-tooltip::before {
+  left: 80% !important;
+  transform: translate(-80%, -100%) !important;
 }

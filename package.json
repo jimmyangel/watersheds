@@ -1,6 +1,6 @@
 {
   "name": "watersheds",
-  "version": "0.7.6",
+  "version": "0.8.0",
   "description": "Oregon Drinking Watersheds",
   "main": "index.js",
   "scripts": {
@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "@creativebulma/bulma-collapsible": "^1.0.4",
+    "@creativebulma/bulma-tooltip": "^1.2.0",
     "@mapbox/leaflet-pip": "^1.1.0",
     "bulma": "^0.9.4",
     "bulma-slider": "^2.0.5",
