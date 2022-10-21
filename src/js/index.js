@@ -253,6 +253,7 @@ async function setUpWatershedsLayer() {
   watersheds.addTo(map)
   map.flyToBounds(config.oregonBbox)
   document.getElementById('downstream').addEventListener('click', downstreamCheckClickHandler)
+  if (localStorage.getItem('downStreamSort') === 'true') document.getElementById('downstream').checked = true
 }
 
 function displayWatershedList() {
@@ -277,7 +278,8 @@ function displayWatershedList() {
   attachCollapsibleElements()
 }
 
-function downstreamCheckClickHandler() {
+function downstreamCheckClickHandler(e) {
+  localStorage.setItem('downStreamSort', e.target.checked)
   document.getElementById('ws-list').innerHTML = ''
   unHighlightAllWatersheds()
   displayWatershedList()
