@@ -46,6 +46,7 @@ let stripes = new L.StripePattern(config.stripesStyleOptions); stripes.addTo(map
 let marker
 
 map.setMaxBounds(config.maxBounds)
+map.fitBounds(config.oregonBbox)
 
 L.control.scale({metric: false}).addTo(map)
 
@@ -54,11 +55,8 @@ setUpResetControl()
 setUpLayerControl()
 setUpAboutControl()
 setupInfoPanel()
-
-map.whenReady(() => {
-  displayWelcome()
-  setUpWatershedsLayer()
-})
+setUpWatershedsLayer()
+displayWelcome()
 
 function setupInfoPanel() {
   document.getElementById('legend').innerHTML = legend({
@@ -254,7 +252,6 @@ async function setUpWatershedsLayer() {
     }
   })
   watersheds.addTo(map)
-  map.flyToBounds(config.oregonBbox)
   document.getElementById('downstream').addEventListener('click', downstreamCheckClickHandler)
   if (localStorage.getItem('downStreamSort') === 'true') document.getElementById('downstream').checked = true
 }
