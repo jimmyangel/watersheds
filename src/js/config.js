@@ -29,7 +29,7 @@ export var config = {
   overlayLayers: [
     {
       options: {
-        url: 'https://arcgis.deq.state.or.us/arcgis/rest/services/WQ/OregonHydro/MapServer',
+        url: 'https://arcgis.deq.state.or.us/arcgis/rest/services/WQ/DEQ_Streams/MapServer',
         f: 'image',
         format: 'png32',
         layers: [0],
