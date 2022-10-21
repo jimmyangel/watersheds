@@ -54,9 +54,11 @@ setUpResetControl()
 setUpLayerControl()
 setUpAboutControl()
 setupInfoPanel()
-setUpWatershedsLayer()
 
-map.whenReady(displayWelcome)
+map.whenReady(() => {
+  displayWelcome()
+  setUpWatershedsLayer()
+})
 
 function setupInfoPanel() {
   document.getElementById('legend').innerHTML = legend({
