@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
-const HtmlPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackSkipAssetsPlugin = require('html-webpack-skip-assets-plugin').HtmlWebpackSkipAssetsPlugin
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
@@ -16,7 +17,9 @@ const config = {
     path: path.resolve(__dirname, 'public')
   },
   plugins: [
-    new HtmlPlugin({template: 'index.html',inject : true}),
+    new HtmlWebpackPlugin({template: 'index.html',inject : true}),
+    new HtmlWebpackPlugin({filename: '404.html', template: '404.html', excludeAssets: ['**.js']}),
+    new HtmlWebpackSkipAssetsPlugin(),
     new MiniCssExtractPlugin(),
     new CopyWebpackPlugin({patterns: [{from: '../data', to: 'data'}]}),
     //new BundleAnalyzerPlugin()

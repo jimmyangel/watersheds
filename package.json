@@ -1,6 +1,6 @@
 {
   "name": "watersheds",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Oregon Drinking Watersheds",
   "main": "index.js",
   "scripts": {
@@ -30,6 +30,7 @@
     "handlebars-loader": "^1.7.2",
     "html-loader": "^4.1.0",
     "html-webpack-plugin": "^5.5.0",
+    "html-webpack-skip-assets-plugin": "^1.0.3",
     "mini-css-extract-plugin": "^2.6.1",
     "sass": "^1.54.9",
     "sass-loader": "^13.0.2",
